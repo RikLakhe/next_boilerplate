@@ -1,0 +1,108 @@
+// Bootstrap base colors
+$white: #ffffff;
+$black: #000000;
+$gray-100: #1b1b29;
+$gray-200: #2b2b40;
+$gray-300: #323248;
+$gray-400: #474761;
+$gray-500: #565674;
+$gray-600: #6d6d80;
+$gray-700: #92929f;
+$gray-800: #cdcdde;
+$gray-900: #ffffff;
+$text-muted: $gray-500;
+
+// Bootstrap gray colors map
+$grays: (
+    "100": $gray-100,
+    "200": $gray-200,
+    "300": $gray-300,
+    "400": $gray-400,
+    "500": $gray-500,
+    "600": $gray-600,
+    "700": $gray-700,
+    "800": $gray-800,
+    "900": $gray-900,
+); // Custom variable
+
+// Bootstrap custom colors
+$blue: #009ef6;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #d63384;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #198754;
+$teal: #20c997;
+$cyan: #0dcaf0;
+
+// Bootstrap colors map
+$colors: (
+    "blue": $blue,
+    "indigo": $indigo,
+    "purple": $purple,
+    "pink": $pink,
+    "red": $red,
+    "orange": $orange,
+    "yellow": $yellow,
+    "green": $green,
+    "teal": $teal,
+    "cyan": $cyan,
+    "gray": $gray-600,
+    "gray-dark": $gray-800,
+);
+
+// Bootstrap contextual colors
+// Dark colors
+$dark: $gray-900; // Bootstrap variable
+$dark-active: $gray-900;
+$dark-light: $gray-200; // Custom variable
+$dark-inverse: $gray-100; // Custom variable
+
+// Primary colors
+$primary: #3699ff; // Bootstrap variable
+$primary-active: #187de4; // Custom variable
+$primary-light: #212e48; // Custom variable
+$primary-inverse: $white; // Custom variable
+
+// Secondary colors
+$secondary: $gray-300; // Bootstrap variable
+$secondary-active: $gray-400; // Custom variable
+$secondary-light: $gray-100; // Custom variable
+$secondary-inverse: $gray-800; // Custom variable
+
+// Light colors
+$light: $gray-100; // Bootstrap variable
+$light-active: $gray-300; // Custom variable
+$light-inverse: $gray-800; // Custom variable
+$lighten: rgba($light, 0.5); // Custom variable
+
+// Success colors
+$success: #1bc5bd; // Bootstrap variable
+$success-active: #0bb7af; // Custom variable
+$success-light: #1c3833; // Custom variable
+$success-inverse: $white; // Custom variable
+
+// Inco colors
+$info: #8950fc; // Bootstrap variable
+$info-active: #7337ee; // Custom variable
+$info-light: #2f264f; // Custom variable
+$info-inverse: $white; // Custom variable
+
+// Warning colors
+$warning: #ffa800; // Bootstrap variable
+$warning-active: #ee9d01; // Custom variable
+$warning-light: #392f28; // Custom variable
+$warning-inverse: $white; // Custom variable
+
+// Danger colors
+$danger: #f64e60; // Bootstrap variable
+$danger-active: #ee2d41; // Custom variable
+$danger-light: #3a2434; // Custom variable
+$danger-inverse: $white; // Custom variable
+
+// White colors
+$white: $white; // Bootstrap variable
+$white-active: $gray-100; // Custom variable
+$white-inverse: $gray-600; // Custom variable
