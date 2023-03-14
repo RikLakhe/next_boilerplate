@@ -4,7 +4,7 @@ import Router from "next/router";
 import { NEXT_APP_AUTH, API_URL } from "@/constants";
 import { setLocalStorage, cleanLocalStorage } from "./localstorage.utils";
 
-export const httpBase = (test) => {
+export const httpBase = () => {
     const configHTTPHeader = {
         Pragma: "no-cache",
         Accept: "application/json",
