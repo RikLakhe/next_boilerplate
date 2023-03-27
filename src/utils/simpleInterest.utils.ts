@@ -11,5 +11,5 @@ export function calculateSimpleInterest(
     time: number,
     rate: number
 ) {
-    return (principle * time * rate) / 1000;
+    return (principle * time * rate) / 10000;
 }
