@@ -6,13 +6,12 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "test": "jest",
+        "test": "jest --bail --findRelatedTests",
+        "postinstall": "npx husky install",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
-        "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
-        "postinstall": "npm run execute-husky",
+        "lint:fix": "eslint --cache --fix --ext .js,.jsx,.ts,.tsx .",
         "docker:build": "docker build -t nextjs-docker .",
-        "docker:start": "docker run -p 3000:3000 nextjs-docker",
-        "execute-husky": "husky install && husky add .husky/pre-commit \"npx tsc --noEmit && npx lint-staged\""
+        "docker:start": "docker run -p 3000:3000 nextjs-docker"
     },
     "dependencies": {
         "@emotion/cache": "^11.10.5",
@@ -50,10 +49,5 @@
         "husky": "^8.0.3",
         "lint-staged": "^13.1.2",
         "prettier": "^2.8.4"
-    },
-    "lint-staged": {
-        "src/**/*.{js,jsx,ts,tsx}": "eslint --cache --fix",
-        "src/**/*.{js,jsx,ts,tsx}": "jest",
-        "src/**/*.{js,jsx,ts,tsx,css,scss,md}": "prettier --write --ignore-unknown"
     }
 }
