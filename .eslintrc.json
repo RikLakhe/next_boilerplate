@@ -7,13 +7,19 @@
             "jsx": true
         }
     },
-
+    "overrides": [
+        {
+            "files": ["**/*.spec.ts", "**/*.spec.tsx"],
+            "env": {
+                "jest": true
+            }
+        }
+    ],
     "env": {
         "browser": true,
         "node": true,
         "es6": true
     },
-
     "settings": {
         "react": {
             "version": "detect"
@@ -24,7 +30,6 @@
             }
         }
     },
-
     "plugins": ["@typescript-eslint"],
     "extends": [
         "next/core-web-vitals",
