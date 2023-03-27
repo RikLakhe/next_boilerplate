@@ -8,9 +8,10 @@
         "start": "next start",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
         "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
-        "execute-husky": "npx husky install && npx husky add .husky/pre-commit \"npx tsc --noEmit && npx eslint --fix . && npx prettier --write . && npx lint-staged\"",
+        "postinstall": "npm run husky",
         "docker:build": "docker build -t nextjs-docker .",
-        "docker:start": "docker run -p 3000:3000 nextjs-docker"
+        "docker:start": "docker run -p 3000:3000 nextjs-docker",
+        "husky": "husky install && husky add .husky/pre-commit \"npx tsc --noEmit && npx eslint --fix . && npx prettier --write . && npx lint-staged .\""
     },
     "dependencies": {
         "@emotion/cache": "^11.10.5",
