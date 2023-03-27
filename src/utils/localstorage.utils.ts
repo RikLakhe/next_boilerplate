@@ -3,6 +3,8 @@ export const getLocalStorage = (key?: string): string => {
         return "";
     }
 
+    console.log("test");
+
     if (typeof window !== "undefined") {
         let retrunValue = "";
         const localData: string | null = localStorage.getItem(key);
