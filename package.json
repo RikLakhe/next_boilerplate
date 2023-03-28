@@ -6,7 +6,8 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "test": "jest --bail --findRelatedTests",
+        "test": "jest",
+        "staged-test": "jest --bail --findRelatedTests",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
         "lint:fix": "eslint --cache --fix --ext .js,.jsx,.ts,.tsx .",
         "postinstall": "npm run execute-husky",
@@ -20,6 +21,11 @@
         "@emotion/styled": "^11.10.6",
         "@mui/material": "^5.11.12",
         "@mui/styles": "^5.11.12",
+        "@tanstack/react-query": "^4.28.0",
+        "@trpc/client": "^10.18.0",
+        "@trpc/next": "^10.18.0",
+        "@trpc/react-query": "^10.18.0",
+        "@trpc/server": "^10.18.0",
         "@types/node": "18.14.6",
         "@types/react": "18.0.28",
         "@types/react-dom": "18.0.11",
@@ -28,10 +34,13 @@
         "eslint-config-next": "13.2.3",
         "formik": "^2.2.9",
         "next": "13.2.3",
+        "next-auth": "^4.20.1",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "sass": "^1.59.2",
-        "typescript": "4.9.5"
+        "superjson": "^1.12.2",
+        "typescript": "4.9.5",
+        "zod": "^3.21.4"
     },
     "devDependencies": {
         "@types/jest": "^29.5.0",
@@ -56,7 +65,7 @@
     "lint-staged": {
         "src/**/*.{js,jsx,ts,tsx}": [
             "npm run lint:fix",
-            "npm run test"
+            "npm run staged-test"
         ],
         "src/**/*.{js,jsx,ts,tsx,css,scss,md}": "prettier --write --ignore-unknown"
     }
