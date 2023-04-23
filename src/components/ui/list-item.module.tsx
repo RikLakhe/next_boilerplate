@@ -1,8 +1,14 @@
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 
 import classes from "./list.module.css";
 
-export default function ListItem(props) {
+interface ListItemProps {
+  key: number;
+  children: React.ReactNode;
+  onClick: () => void;
+}
+
+const ListItem: React.FC<ListItemProps> = (props) => {
   const handleListItemClick = () => {
     props.onClick();
   };
@@ -18,4 +24,6 @@ export default function ListItem(props) {
       </div>
     </Fragment>
   );
-}
+};
+
+export default ListItem;

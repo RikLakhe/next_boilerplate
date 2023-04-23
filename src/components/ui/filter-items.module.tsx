@@ -1,7 +1,13 @@
 import { Fragment } from "react";
 import classes from "./filter.module.css";
 
-export default function FilterItem(props) {
+interface FilterItemProps {
+  active: boolean;
+  children: React.ReactNode;
+  handleClick: ({}) => void;
+}
+
+const FilterItem: React.FC<FilterItemProps> = (props) => {
   return (
     <Fragment>
       <div
@@ -14,4 +20,6 @@ export default function FilterItem(props) {
       </div>
     </Fragment>
   );
-}
+};
+
+export default FilterItem;
