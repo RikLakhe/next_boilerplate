@@ -1,0 +1,17 @@
+.wrapper {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.item {
+  max-width: 400px;
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(48, 48, 48);
+  border: 0.25px solid rgb(52, 37, 37);
+  border-radius: 15px;
+  word-wrap: break-word;
+}
