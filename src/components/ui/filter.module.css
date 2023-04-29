@@ -1,0 +1,30 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.filterItem {
+  font-size: xx-small;
+  cursor: pointer;
+  background-color: rgb(35, 2, 2);
+  min-width: 50px;
+  word-wrap: break-word;
+  padding: 5px;
+  border: 0.25px solid rgb(30, 13, 13);
+}
+
+.filterItem:hover {
+  font-size: large;
+  background-color: rgb(35, 35, 35);
+  border: 0.25px solid rgb(83, 38, 38);
+  transform: translateY(-3px);
+}
+
+.filterItemActive {
+  font-size: xx-small;
+  cursor: pointer;
+  background-color: rgb(240, 240, 240);
+  color: black;
+}
