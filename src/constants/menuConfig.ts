@@ -3,7 +3,7 @@ import { AudioWaveform, BookOpen, Bot, Command, Frame, GalleryVerticalEnd, Map, 
 const APP_MENU = {
   user: {
     name: "Rikesh",
-    email: "m@example.com",
+    email: "rikesh@F.net",
     avatar: "/avatars/shadcn.jpg",
   },
   teams: [
@@ -25,105 +25,123 @@ const APP_MENU = {
   ],
   navMain: [
     {
-      title: "Aricalot General",
-      url: "#",
+      title: "Employee Management",
+      url: "/employee",
       icon: SquareTerminal,
-      isActive: true,
       items: [
         {
-          title: "Calendar",
-          url: "#",
+          title: "Attendance",
+          url: "/employee/attendance",
         },
         {
-          title: "Pending Request",
-          url: "#",
+          title: "Profiles",
+          url: "/employee/profiles",
         },
         {
-          title: "History",
-          url: "#",
+          title: "Departments",
+          url: "/employee/departments",
         },
       ],
     },
     {
-      title: "Models",
-      url: "#",
+      title: "Payroll & Benefits",
+      url: "/payroll",
       icon: Bot,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Salary",
+          url: "/payroll/salary",
         },
         {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
+          title: "Bonus",
+          url: "/payroll/bonus",
         },
       ],
     },
     {
-      title: "Documentation",
-      url: "#",
+      title: "Performance & KPI",
+      url: "/performance",
       icon: BookOpen,
       items: [
         {
-          title: "Introduction",
-          url: "#",
+          title: "Reviews",
+          url: "/performance/reviews",
         },
         {
-          title: "Get Started",
-          url: "#",
+          title: "Gaols",
+          url: "/performance/goals",
         },
         {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
+          title: "Feedback",
+          url: "/performance/feedback",
         },
       ],
     },
     {
-      title: "Settings",
-      url: "#",
+      title: "Time & Leave Management",
+      url: "/time",
       icon: Settings2,
       items: [
         {
-          title: "General",
-          url: "#",
+          title: "Leave Request",
+          url: "/time/leave-request",
         },
         {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
+          title: "Holiday",
+          url: "/time/holiday",
         },
       ],
     },
   ],
   projects: [
     {
-      name: "Design Engineering",
-      url: "#",
+      name: "Approvals",
+      url: "/approvals",
       icon: Frame,
     },
     {
-      name: "Sales & Marketing",
-      url: "#",
+      name: "Reports",
+      url: "/reports",
       icon: PieChartIcon,
     },
     {
-      name: "Travel",
-      url: "#",
+      name: "Performance Reviews",
+      url: "/reviews",
+      icon: Map,
+    },
+    {
+      name: "Profile",
+      url: "/profile",
+      icon: Map,
+    },
+    {
+      name: "Leave Requests",
+      url: "/leave-requests",
+      icon: Map,
+    },
+    {
+      name: "Payslip",
+      url: "/payslip",
+      icon: Map,
+    },
+    {
+      name: "Hiring",
+      url: "/hiring",
+      icon: Map,
+    },
+    {
+      name: "Policies",
+      url: "/policies",
+      icon: Map,
+    },
+    {
+      name: "Compliance",
+      url: "/compliance",
+      icon: Map,
+    },
+    {
+      name: "Events and Notices",
+      url: "/event-notice",
       icon: Map,
     },
   ],
