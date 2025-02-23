@@ -1,3 +1,8 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 import { AppSidebar } from "@/components/app-sidebar"
 import {
     Breadcrumb,
@@ -14,12 +19,22 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { NavActions } from "./nav-actions";
+import { useEffect } from "react";
 
 export default function AppLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const { data: session, status } = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.push("/login");
+        }
+    }, [status, router]);
+
     return (
         <SidebarProvider>
             <AppSidebar />
