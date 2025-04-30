@@ -1,0 +1,107 @@
+{
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "eslint-config-airbnb",
+    "eslint-config-airbnb-typescript",
+    "next/core-web-vitals"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "tsconfig.json",
+    "tsconfigRootDir": "."
+  },
+  "plugins": ["react-refresh", "prettier"],
+  "rules": {
+    "indent": [
+      "error",
+      4,
+      {
+        "SwitchCase": 1,
+        "ignoredNodes": ["TemplateLiteral *"]
+      },
+      {
+        "ignoreComments": true
+      }
+    ],
+    "object-curly-newline": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    "import/extensions": [
+      "error",
+      "never",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never",
+        "*.scss": "never"
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto",
+        "printWidth": 80,
+        "semi": true,
+        "singleQuote": false,
+        "trailingComma": "all",
+        "tabWidth": 2
+      }
+    ],
+    "react/prop-types": "off",
+    "react/require-default-props": "off",
+    "react/no-unstable-nested-components": "off",
+    "react-refresh/only-export-components": "warn",
+    "react/react-in-jsx-scope": "off",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/quotes": [
+      "error",
+      "double",
+      {
+        "avoidEscape": true
+      }
+    ],
+    "operator-linebreak": "off",
+    "arrow-body-style": ["error", "always"],
+    "no-console": "warn",
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      {
+        "ts-nocheck": true
+      }
+    ],
+    "eol-last": ["error", "always"],
+    "max-lines": [
+      "error",
+      {
+        "max": 800,
+        "skipComments": false
+      }
+    ],
+    "no-multiple-empty-lines": "error",
+    "no-trailing-spaces": "error",
+    "@typescript-eslint/no-shadow": "warn",
+    "radix": "warn",
+    "max-len": "warn",
+    "linebreak-style": "off",
+    "no-param-reassign": "off"
+  }
+}

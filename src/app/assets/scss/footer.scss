@@ -1,0 +1,127 @@
+@import "./variables.scss";
+
+.footer {
+  height: 178px;
+  background-color: $footer-color;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  color: $footer-text-color;
+  font-size: 14px;
+  font-weight: 400;
+
+  .footer__top-section {
+    height: 100%;
+    display: flex;
+
+    width: 1202px;
+    margin: auto;
+    max-width: 100%;
+
+    .top-section__logo {
+      margin-right: 80px;
+      margin-top: 18px;
+    }
+
+    .top-section__links {
+      margin-right: 80px;
+      margin-top: 12px;
+
+      a {
+        cursor: pointer;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        color: $footer-text-color;
+
+        &:hover {
+          color: $text-grey;
+        }
+      }
+
+      .link__rules-terms {
+        display: flex;
+        flex-direction: column;
+
+        a {
+          cursor: pointer;
+          margin-top: 3px;
+          margin-bottom: 3px;
+          color: $footer-text-color;
+
+          &:hover {
+            color: $text-grey;
+          }
+        }
+      }
+    }
+
+    .top-section__contacts {
+      margin-right: 80px;
+      margin-top: 12px;
+
+      .contacts__types {
+        time {
+          cursor: none;
+        }
+
+        p,
+        a {
+          cursor: pointer;
+          margin-top: 6px;
+          margin-bottom: 6px;
+
+          color: $footer-text-color;
+
+          &:hover {
+            color: $text-grey;
+          }
+        }
+      }
+    }
+
+    .top-section__payment-partners {
+      margin-right: 80px;
+      margin-top: 12px;
+    }
+
+    .top-section__connect-with-us {
+      margin-top: 24px;
+
+      .connect-with-us__social-medias {
+        display: flex;
+
+        img {
+          margin-right: 10px;
+          cursor: pointer;
+        }
+      }
+
+      .connect-with-us__whatsapp-qr {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .footer__bottom-section {
+    background-color: $footer-secondary-color;
+    height: 34px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      margin: 0px;
+    }
+  }
+}
+
+@media (width <= 800px) {
+  .footer {
+    height: 100%;
+  }
+  .footer__top-section {
+    flex-direction: column;
+    margin: 10% !important;
+  }
+}

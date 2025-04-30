@@ -1,0 +1,65 @@
+@import "./variables.scss";
+
+.landing-page_section_top {
+  width: 99vw;
+}
+
+.search__header-none {
+  display: none;
+}
+.search__header {
+  display: flex;
+  align-items: center;
+  width: 80vw;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  width: 99vw;
+  background-color: var(--primary-color-light-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  position: fixed;
+  z-index: 5;
+  top: 60px;
+  margin-top: 4px;
+  .header__left {
+    display: flex;
+  }
+  .header__flight-location {
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+    border-right: 2px solid $secondary-color;
+    p {
+      margin: 0px;
+    }
+    img {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+  .header__flight-date,
+  .header__flight-traveller {
+    padding-left: 10px;
+    border-right: 2px solid $secondary-color;
+    padding-right: 10px;
+  }
+  .header__trip-type {
+    padding-left: 10px;
+    padding-right: 40px;
+  }
+}
+
+@media (width <= 800px) {
+  .search__header {
+    font-size: 12px;
+  }
+}
+
+@media (width <= 700px) {
+  .search__header {
+    display: none;
+  }
+}

@@ -1,0 +1,299 @@
+@import "./variables.scss";
+.flight-payment {
+  .payment__payment-section {
+    margin-left: 150px;
+    .payment-title {
+      color: $text-grey;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .payment-summary {
+      width: 750px;
+      border: 1px solid $border-color;
+      background-color: $white;
+      height: auto;
+      p {
+        margin: 0px;
+      }
+    }
+    .summary__heading {
+      margin-top: 8px;
+      background-color: $primary-color-light-200;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0px 25px;
+      .summary-title {
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+    .summary__body {
+      padding: 0px 25px;
+      .total__fare {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 25px 0px;
+        .fare-title {
+          font-size: 16px;
+          font-weight: 300;
+        }
+        .fare-amount {
+          display: flex;
+          align-items: center;
+          font-weight: 300;
+
+          .amount__currency {
+            font-size: 16px;
+            padding-top: 2px;
+          }
+          .amount__total {
+            font-size: 20px;
+            margin-left: 4px;
+          }
+        }
+      }
+      .processing-fee {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 25px;
+
+        .processing-fee-title {
+          font-size: 16px;
+          font-weight: 400;
+        }
+        .fare-amount {
+          display: flex;
+          align-items: center;
+
+          .amount__currency {
+            font-size: 12px;
+            padding-top: 2px;
+          }
+          .amount__total {
+            font-size: 16px;
+            margin-left: 4px;
+          }
+        }
+      }
+    }
+    .summary__total {
+      background-color: $primary-color-light-200;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0px 25px;
+      .total-amount__title {
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .fare-amount {
+        display: flex;
+        align-items: center;
+
+        .amount__currency {
+          font-size: 16px;
+          padding-top: 2px;
+          font-weight: 600;
+        }
+        .amount__total {
+          font-size: 20px;
+          margin-left: 4px;
+          font-weight: 600;
+        }
+      }
+    }
+    .payment-partners__payment-message {
+      display: flex;
+      align-items: center;
+      background-color: $yellow-background-color;
+      border: 1px solid $border-color;
+      padding: 2px 25px;
+    }
+    .summary__payment-partners {
+      padding: 0px 25px 25px 0px;
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      max-width: 700px;
+      height: auto;
+
+      .payment-partner {
+        height: 45px;
+        min-height: 45px;
+        min-width: 122px;
+        width: 122px;
+        border-radius: 22px;
+        border: 1px solid $border-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 25px;
+        margin-left: 25px;
+        cursor: pointer;
+        &:hover {
+          border: 1px solid $primary-color;
+        }
+        img {
+          max-height: 100%;
+          max-width: 100%;
+          object-fit: contain;
+        }
+        .fone-pay-img {
+          width: 70px;
+        }
+      }
+      .payment-partner-active {
+        height: 45px;
+        min-height: 45px;
+        min-width: 122px;
+        width: 122px;
+        border-radius: 22px;
+        border: 1px solid $primary-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 25px;
+        margin-left: 25px;
+        cursor: pointer;
+      }
+      .payment-partner-disabled {
+        height: 45px;
+        min-height: 45px;
+        min-width: 122px;
+        width: 122px;
+        border-radius: 22px;
+        border: 1px solid $border-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 25px;
+        margin-left: 25px;
+        cursor: not-allowed;
+      }
+      .payment-partners__not-available {
+        text-align: center;
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
+  }
+  .payment-btn-section {
+    width: 750px;
+    margin-left: 150px;
+    margin-top: 20px;
+    .ant-btn {
+      margin-left: auto;
+    }
+  }
+}
+.verify-otp-for-payment {
+  .otp_field__input {
+    display: flex;
+    button {
+      margin-left: 8px;
+    }
+  }
+}
+.qr-payment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  img {
+    max-width: 90px;
+    max-height: 30px;
+  }
+  .qr-code {
+    margin-top: 10px;
+  }
+  .qr-payment__bottom-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .qr-payment-amount {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      p {
+        margin: 0;
+        text-align: center;
+        font-size: 12px;
+        margin-right: 4px;
+      }
+      strong {
+        font-weight: 500;
+        font-size: 26px;
+      }
+    }
+    .qr-payment__partners {
+      margin-top: 20px;
+      .partners__images {
+        border: 1px solid $border-color;
+        border-radius: 4px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        flex-wrap: wrap;
+        gap: 20px;
+
+        .esewa {
+          max-width: 80px;
+        }
+        div {
+          position: absolute;
+          top: -16px;
+          padding: 6px 14px;
+          left: 40%;
+          background-color: $white;
+          color: $text-grey-light;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  .qr-payment__cancel {
+    margin-left: auto;
+    color: $primary-color;
+    cursor: pointer;
+    margin-top: 8px;
+    &:hover {
+      font-weight: 500;
+    }
+  }
+}
+
+@media (width<=600px) {
+  .flight-payment {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    .payment__payment-section {
+      margin-left: 0px;
+    }
+    .payment-summary {
+      width: 370px !important;
+      .summary__heading,
+      .summary__total,
+      .summary__body {
+        padding: 0px 10px;
+      }
+      .total-amount__title {
+        font-size: 14px !important;
+      }
+    }
+  }
+  .payment-btn-section {
+    width: 200px !important;
+    margin-top: 20px;
+    .ant-btn {
+      margin-left: auto;
+    }
+  }
+}

@@ -1,0 +1,1714 @@
+@import "./variables.scss";
+@import "./mixin.scss";
+
+.flight_ticket_wrapper {
+  height: 90vh;
+  width: 100%;
+  overflow-x: hidden;
+  top: 90px;
+}
+
+.flight-ticket__loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
+.support-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 100px;
+
+  h1 {
+    margin: 0px;
+    margin-top: 10px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+}
+
+.flight_ticket {
+  .payment-successfull {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .anticon-check-circle {
+      color: $success;
+    }
+
+    p {
+      margin-left: 6px;
+      font-weight: 500;
+      font-size: 16px;
+    }
+  }
+
+  .flight-ticket__details {
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: $white;
+    padding-top: 18px;
+    padding-bottom: 20px;
+
+    .detail__header {
+      height: 48px;
+      background-color: $primary-color-light-200;
+      display: flex;
+      justify-content: space-between;
+
+      .header__title {
+        padding-left: 38px;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .header__download {
+        display: flex;
+        align-items: center;
+        padding-right: 38px;
+        cursor: pointer;
+
+        p {
+          margin-left: 6px;
+          font-size: 16px;
+        }
+      }
+    }
+
+    .download__ticketed-ticket {
+      display: flex;
+      align-items: center;
+      padding-right: 38px;
+      cursor: pointer;
+      float: right;
+
+      p {
+        margin: 0px;
+        margin-left: 4px;
+        font-size: 16px;
+      }
+    }
+
+    .detail__main-section {
+      border: 2px dashed $border-color;
+      margin: 38px 38px;
+
+      .main-section___header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 42px 38px 0px 58px;
+
+        .header__left-section {
+          display: flex;
+          align-items: center;
+
+          img {
+            max-width: 250px;
+            max-height: auto;
+          }
+        }
+        .left-section__e-ticket {
+          margin-left: 6px;
+          font-size: 16px;
+          font-weight: 500;
+          margin-top: 24px;
+        }
+
+        .header__right-section {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+
+          p {
+            margin: 0px;
+            color: $text-grey;
+            margin-left: auto;
+          }
+
+          h1 {
+            margin: 0px;
+            font-size: 50px;
+          }
+        }
+      }
+
+      .detail__ticket-details {
+        padding: 24px 38px 0px 58px;
+
+        .ticket-details__header {
+          @include clipPath_polygon-header;
+        }
+
+        .ticket-details__passenger-detail {
+          table {
+            width: 100%;
+            border-collapse: collapse;
+
+            tr {
+              background-color: $primary-color-light-200;
+              color: $text-grey;
+              height: 36px;
+
+              th {
+                font-weight: 500;
+                text-align: left;
+                font-size: 16px;
+
+                &:nth-child(1) {
+                  padding-left: 24px;
+                }
+
+                &:nth-child(2) {
+                  text-align: center;
+                }
+
+                &:nth-child(3) {
+                  text-align: right;
+                  padding-right: 24px;
+                }
+              }
+            }
+
+            tbody {
+              height: 36px;
+              border-bottom: 1px solid $border-color;
+
+              td {
+                font-size: 18px;
+                font-weight: 500;
+
+                &:nth-child(1) {
+                  padding-left: 24px;
+                }
+
+                &:nth-child(2) {
+                  text-align: center;
+                }
+
+                &:nth-child(3) {
+                  text-align: right;
+                  padding-right: 24px;
+                }
+              }
+            }
+          }
+        }
+
+        .ticket-details__iternary-detail {
+          .screen_sm {
+            .flight-detail__header {
+              height: 36px;
+              background-color: $primary-color-light-200;
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+
+              p {
+                color: $text-grey;
+                font-size: 16px;
+                margin: 0px;
+                margin-top: 8px;
+              }
+
+              .header__flight {
+                margin-left: 24px;
+              }
+            }
+
+            .flight-detail__flight-section {
+              display: grid;
+              padding-bottom: 12px;
+              border-bottom: 1px solid $border-color;
+
+              p {
+                margin: 0px 0px 4px 0px;
+              }
+
+              .flight-section__left-section {
+                padding-left: 24px;
+                .airline-name {
+                  font-size: 12px;
+                }
+                .airline-number {
+                  font-size: 18px;
+                  font-weight: 500;
+                }
+              }
+
+              .flight-section__middle-section,
+              .flight-section__right-section {
+                .middle-section__top,
+                .right-section__top {
+                  display: flex;
+                  align-items: center;
+                  flex-wrap: wrap;
+
+                  .top__departure-code {
+                    font-size: 16px;
+                    font-weight: 500;
+                  }
+                }
+
+                .top__departure-date {
+                  display: flex;
+                  align-items: center;
+
+                  .departure-date,
+                  .departure-time {
+                    font-weight: 500;
+                    font-size: 16px;
+                  }
+
+                  .local-time {
+                    font-size: 10px;
+                    color: $secondary-color;
+                    margin-left: 4px;
+                  }
+                }
+
+                .airport-name {
+                  font-size: 14px;
+                }
+
+                .departure-terminal {
+                  font-weight: 500;
+                  font-size: 14px;
+                }
+              }
+
+              .flight-section__right-section {
+              }
+
+              .flight-section_left-section,
+              .flight-section_middle-section,
+              .flight-section_right-section {
+                border-bottom: 1px solid $border-color;
+
+                .header__flight,
+                .header__from,
+                .header__to {
+                  height: 36px;
+                  background-color: $primary-color-light-200;
+                  display: grid;
+                  align-items: center;
+                  padding-left: 10px;
+                  font-weight: 600;
+                  font-size: 14px;
+                }
+
+                .flight-section__left-section {
+                  padding-left: 0px;
+                  .airline-name {
+                    font-size: 12px;
+                  }
+                  .airline-number {
+                    font-size: 18px;
+                    font-weight: 500;
+                  }
+                }
+              }
+
+              .transit-detail {
+                height: 100%;
+                display: grid;
+
+                .transit-left-section {
+                  padding-left: 5px;
+                  padding-right: 5px;
+                }
+
+                .transit-right-section {
+                  padding-left: 5px;
+                  padding-right: 5px;
+                }
+              }
+
+              .iternary-section__cabin-detail {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                padding: 12px 0px 18px 0px;
+
+                p {
+                  margin: 0px 0px 0px 0px;
+                  color: $text-grey;
+                }
+
+                .cabin-detail__left-section {
+                  padding-left: 0px;
+                }
+                strong {
+                  font-weight: 500;
+                }
+
+                .cabin-detail__right-section {
+                  .right-section__check-in,
+                  .right-section__carry-on {
+                    display: flex;
+                    align-items: center;
+                  }
+                }
+              }
+            }
+
+            .iternary-section__cabin-detail {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              padding: 12px 0px 18px 0px;
+
+              p {
+                margin: 0px 0px 0px 0px;
+                color: $text-grey;
+              }
+
+              .cabin-detail__left-section {
+                padding-left: 24px;
+              }
+              strong {
+                font-weight: 600;
+              }
+
+              .cabin-detail__right-section {
+                .right-section__check-in,
+                .right-section__carry-on {
+                  display: flex;
+                  align-items: center;
+                }
+              }
+            }
+
+            .transit-detail {
+              height: 34px;
+              border-top: 1px solid $primary-color-light-200;
+              border-bottom: 1px solid $primary-color-light-200;
+              background-color: $yellow-background-color;
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 12px;
+
+              .transit-left-section {
+                display: flex;
+                align-items: center;
+                padding-left: 24px;
+              }
+
+              .transit-right-section {
+                display: flex;
+                align-items: center;
+                padding-right: 18px;
+              }
+
+              .transit-time,
+              .transit-location {
+                font-size: 16px;
+                font-weight: 600;
+              }
+              .transit-visa {
+                font-weight: 600;
+              }
+            }
+          }
+
+          .iternary-detail__header {
+            @include clipPath_polygon-header;
+          }
+
+          .iternary-detail__flight-detail {
+            .flight-detail__header {
+              height: 36px;
+              background-color: $primary-color-light-200;
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+
+              p {
+                color: $text-grey;
+                font-size: 16px;
+                margin: 0px;
+                margin-top: 8px;
+              }
+
+              .header__flight {
+                margin-left: 24px;
+              }
+            }
+
+            .flight-detail__flight-section {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              padding-bottom: 12px;
+              padding-top: 10px;
+              border-bottom: 1px solid $border-color;
+
+              p {
+                margin: 0px 0px 4px 0px;
+              }
+
+              .flight-section__left-section {
+                padding-left: 24px;
+                .airline-name {
+                  font-size: 12px;
+                }
+                .airline-number {
+                  font-size: 18px;
+                  font-weight: 500;
+                }
+              }
+
+              .flight-section__middle-section,
+              .flight-section__right-section {
+                .middle-section__top,
+                .right-section__top {
+                  display: flex;
+                  align-items: center;
+                  flex-wrap: wrap;
+
+                  .top__departure-code {
+                    font-size: 16px;
+                    font-weight: 500;
+                  }
+                }
+
+                .top__departure-date {
+                  display: flex;
+                  align-items: center;
+
+                  .departure-date,
+                  .departure-time {
+                    font-weight: 500;
+                    font-size: 16px;
+                  }
+
+                  .local-time {
+                    font-size: 10px;
+                    color: $secondary-color;
+                    margin-left: 4px;
+                  }
+                }
+
+                .airport-name {
+                  font-size: 14px;
+                }
+
+                .departure-terminal {
+                  font-weight: 500;
+                  font-size: 14px;
+                }
+              }
+            }
+
+            .iternary-section__cabin-detail {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              padding: 12px 0px 18px 0px;
+
+              p {
+                margin: 0px 0px 0px 0px;
+                color: $text-grey;
+              }
+
+              .cabin-detail__left-section {
+                padding-left: 24px;
+              }
+              strong {
+                font-weight: 600;
+              }
+
+              .cabin-detail__right-section {
+                .right-section__check-in,
+                .right-section__carry-on {
+                  display: flex;
+                  align-items: center;
+                }
+              }
+            }
+
+            .transit-detail {
+              height: 34px;
+              border-top: 1px solid $primary-color-light-200;
+              border-bottom: 1px solid $primary-color-light-200;
+              background-color: $yellow-background-color;
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 12px;
+
+              .transit-left-section {
+                display: flex;
+                align-items: center;
+                padding-left: 24px;
+              }
+
+              .transit-right-section {
+                display: flex;
+                align-items: center;
+                padding-right: 18px;
+              }
+
+              .transit-time,
+              .transit-location {
+                font-size: 16px;
+                font-weight: 600;
+              }
+              .transit-visa {
+                font-weight: 600;
+              }
+            }
+          }
+
+          .important-notice {
+            margin-top: 8px;
+            border-bottom: 1px solid #e6ebef;
+            .notice-header {
+              margin-top: 13px;
+              height: 38px;
+              display: flex;
+              align-items: center;
+              border-bottom: 1px solid $border-color;
+
+              p {
+                font-size: 14px;
+                color: $error;
+                margin-left: 24px;
+                font-weight: 500;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .download-btn-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      span {
+        margin-left: 0px;
+      }
+    }
+  }
+}
+
+// For PDF download
+.flight_ticket--screen_large {
+  .payment-successfull {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .anticon-check-circle {
+      color: $success;
+    }
+
+    p {
+      margin-left: 6px;
+      font-weight: 500;
+      font-size: 16px;
+    }
+  }
+
+  .flight-ticket__details {
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: $white;
+    padding-top: 18px;
+    padding-bottom: 20px;
+
+    .detail__header {
+      height: 48px;
+      background-color: $primary-color-light-200;
+      display: flex;
+      justify-content: space-between;
+
+      .header__title {
+        padding-left: 38px;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .header__download {
+        display: flex;
+        align-items: center;
+        padding-right: 38px;
+        cursor: pointer;
+
+        p {
+          margin-left: 6px;
+          font-size: 16px;
+        }
+      }
+    }
+
+    .download__ticketed-ticket {
+      display: flex;
+      align-items: center;
+      padding-right: 38px;
+      cursor: pointer;
+      float: right;
+
+      p {
+        margin: 0px;
+        margin-left: 4px;
+        font-size: 16px;
+      }
+    }
+
+    .detail__main-section {
+      border: 2px dashed $border-color;
+      margin: 38px 38px;
+
+      .main-section___header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 42px 38px 0px 58px;
+
+        .header__left-section {
+          display: flex;
+          align-items: center;
+
+          img {
+            max-width: 250px;
+            max-height: auto;
+          }
+        }
+
+        .left-section__e-ticket {
+          margin-left: 6px;
+          font-size: 16px;
+          font-weight: 500;
+          margin-top: 24px;
+        }
+
+        .header__right-section {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+
+          p {
+            margin: 0px;
+            color: $text-grey;
+            margin-left: auto;
+          }
+
+          h1 {
+            margin: 0px;
+            font-size: 50px;
+          }
+        }
+      }
+
+      .detail__ticket-details {
+        padding: 24px 38px 0px 58px;
+
+        .ticket-details__header {
+          @include clipPath_polygon-header;
+        }
+
+        .ticket-details__passenger-detail {
+          table {
+            width: 100%;
+            border-collapse: collapse;
+
+            tr {
+              background-color: $primary-color-light-200;
+              color: $text-grey;
+              height: 36px;
+
+              th {
+                font-weight: 500;
+                text-align: left;
+                font-size: 16px;
+
+                &:nth-child(1) {
+                  padding-left: 24px;
+                }
+
+                &:nth-child(2) {
+                  text-align: center;
+                }
+
+                &:nth-child(3) {
+                  text-align: right;
+                  padding-right: 24px;
+                }
+              }
+            }
+
+            tbody {
+              height: 36px;
+              border-bottom: 1px solid $border-color;
+
+              td {
+                font-size: 18px;
+                font-weight: 500;
+
+                &:nth-child(1) {
+                  padding-left: 24px;
+                }
+
+                &:nth-child(2) {
+                  text-align: center;
+                }
+
+                &:nth-child(3) {
+                  text-align: right;
+                  padding-right: 24px;
+                }
+              }
+            }
+          }
+        }
+
+        .ticket-details__iternary-detail {
+          .screen_sm {
+            .flight-detail__header {
+              height: 36px;
+              background-color: $primary-color-light-200;
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+
+              p {
+                color: $text-grey;
+                font-size: 16px;
+                margin: 0px;
+                margin-top: 8px;
+              }
+
+              .header__flight {
+                margin-left: 24px;
+              }
+            }
+
+            .flight-detail__flight-section {
+              display: grid;
+              padding-bottom: 12px;
+              border-bottom: 1px solid $border-color;
+
+              p {
+                margin: 0px 0px 4px 0px;
+              }
+
+              .flight-section__left-section {
+                padding-left: 24px;
+                .airline-name {
+                  font-size: 12px;
+                }
+                .airline-number {
+                  font-size: 18px;
+                  font-weight: 500;
+                }
+              }
+
+              .flight-section__middle-section,
+              .flight-section__right-section {
+                .middle-section__top,
+                .right-section__top {
+                  display: flex;
+                  align-items: center;
+                  flex-wrap: wrap;
+
+                  .top__departure-code {
+                    font-size: 16px;
+                    font-weight: 500;
+                  }
+                }
+
+                .top__departure-date {
+                  display: flex;
+                  align-items: center;
+
+                  .departure-date,
+                  .departure-time {
+                    font-weight: 500;
+                    font-size: 16px;
+                  }
+
+                  .local-time {
+                    font-size: 10px;
+                    color: $secondary-color;
+                    margin-left: 4px;
+                  }
+                }
+
+                .airport-name {
+                  font-size: 14px;
+                }
+
+                .departure-terminal {
+                  font-weight: 500;
+                  font-size: 14px;
+                }
+              }
+
+              .flight-section_left-section,
+              .flight-section_middle-section,
+              .flight-section_right-section {
+                .header__flight,
+                .header__from,
+                .header__to {
+                  height: 36px;
+                  background-color: $primary-color-light-200;
+                  display: grid;
+                  align-items: center;
+                  padding-left: 10px;
+                  font-weight: 600;
+                  font-size: 14px;
+                }
+
+                .flight-section__left-section {
+                  padding-left: 0px;
+                  .airline-name {
+                    font-size: 12px;
+                  }
+                  .airline-number {
+                    font-size: 18px;
+                    font-weight: 500;
+                  }
+                }
+              }
+
+              .transit-detail {
+                height: 100%;
+                display: grid;
+
+                .transit-left-section {
+                  padding-left: 5px;
+                  padding-right: 5px;
+                }
+
+                .transit-right-section {
+                  padding-left: 5px;
+                  padding-right: 5px;
+                }
+              }
+            }
+
+            .iternary-section__cabin-detail {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              padding: 12px 0px 18px 0px;
+
+              p {
+                margin: 0px 0px 0px 0px;
+                color: $text-grey;
+              }
+
+              .cabin-detail__left-section {
+                padding-left: 24px;
+              }
+              strong {
+                font-weight: 600;
+              }
+
+              .cabin-detail__right-section {
+                .right-section__check-in,
+                .right-section__carry-on {
+                  display: flex;
+                  align-items: center;
+                }
+              }
+            }
+
+            .transit-detail {
+              height: 34px;
+              border-top: 1px solid $primary-color-light-200;
+              border-bottom: 1px solid $primary-color-light-200;
+              background-color: $yellow-background-color;
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 12px;
+
+              .transit-left-section {
+                display: flex;
+                align-items: center;
+                padding-left: 24px;
+              }
+
+              .transit-right-section {
+                display: flex;
+                align-items: center;
+                padding-right: 18px;
+              }
+
+              .transit-time,
+              .transit-location {
+                font-size: 16px;
+                font-weight: 600;
+              }
+              .transit-visa {
+                font-weight: 600;
+              }
+            }
+          }
+
+          .iternary-detail__header {
+            @include clipPath_polygon-header;
+          }
+
+          .iternary-detail__flight-detail {
+            .flight-detail__header {
+              height: 36px;
+              background-color: $primary-color-light-200;
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+
+              p {
+                color: $text-grey;
+                font-size: 16px;
+                margin: 0px;
+                margin-top: 8px;
+              }
+
+              .header__flight {
+                margin-left: 24px;
+              }
+            }
+
+            .flight-detail__flight-section {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              padding-bottom: 12px;
+              padding-top: 10px;
+              border-bottom: 1px solid $border-color;
+
+              p {
+                margin: 0px 0px 4px 0px;
+              }
+
+              .flight-section__left-section {
+                padding-left: 24px;
+                .airline-name {
+                  font-size: 12px;
+                }
+                .airline-number {
+                  font-size: 18px;
+                  font-weight: 500;
+                }
+              }
+
+              .flight-section__middle-section,
+              .flight-section__right-section {
+                .middle-section__top,
+                .right-section__top {
+                  display: flex;
+                  align-items: center;
+                  flex-wrap: wrap;
+
+                  .top__departure-code {
+                    font-size: 16px;
+                    font-weight: 500;
+                  }
+                }
+
+                .top__departure-date {
+                  display: flex;
+                  align-items: center;
+
+                  .departure-date,
+                  .departure-time {
+                    font-weight: 500;
+                    font-size: 16px;
+                  }
+
+                  .local-time {
+                    font-size: 10px;
+                    color: $secondary-color;
+                    margin-left: 4px;
+                  }
+                }
+
+                .airport-name {
+                  font-size: 14px;
+                }
+
+                .departure-terminal {
+                  font-weight: 500;
+                  font-size: 14px;
+                }
+              }
+            }
+
+            .iternary-section__cabin-detail {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              padding: 12px 0px 18px 0px;
+
+              p {
+                margin: 0px 0px 0px 0px;
+                color: $text-grey;
+              }
+
+              .cabin-detail__left-section {
+                padding-left: 24px;
+              }
+              strong {
+                font-weight: 600;
+              }
+
+              .cabin-detail__right-section {
+                .right-section__check-in,
+                .right-section__carry-on {
+                  display: flex;
+                  align-items: center;
+                }
+              }
+            }
+
+            .transit-detail {
+              height: 34px;
+              border-top: 1px solid $primary-color-light-200;
+              border-bottom: 1px solid $primary-color-light-200;
+              background-color: $yellow-background-color;
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 12px;
+
+              .transit-left-section {
+                display: flex;
+                align-items: center;
+                padding-left: 24px;
+              }
+
+              .transit-right-section {
+                display: flex;
+                align-items: center;
+                padding-right: 18px;
+              }
+
+              .transit-time,
+              .transit-location {
+                font-size: 16px;
+                font-weight: 600;
+              }
+              .transit-visa {
+                font-weight: 600;
+              }
+            }
+          }
+
+          .important-notice {
+            margin-top: 8px;
+            border-bottom: 1px solid #e6ebef;
+            ul {
+              margin: 4px 0px;
+            }
+            .notice-header {
+              margin-top: 13px;
+              height: 38px;
+              display: flex;
+              align-items: center;
+              border-bottom: 1px solid $border-color;
+
+              p {
+                font-size: 14px;
+                color: $error;
+                margin-left: 24px;
+                font-weight: 500;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .download-btn-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      span {
+        margin-left: 0px;
+      }
+    }
+  }
+}
+.download-ticket {
+  position: absolute;
+  z-index: -999;
+  opacity: 0;
+  top: -1500px;
+  .ticket-details__iternary-details {
+    margin: 38px 38px;
+    margin-top: 16px;
+
+    .main-section___header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 42px 38px 0px 58px;
+
+      .header__left-section {
+        display: flex;
+        align-items: center;
+
+        img {
+          max-width: 250px;
+          max-height: auto;
+        }
+      }
+      .left-section__e-ticket {
+        margin-left: 6px;
+        font-size: 20px;
+        font-weight: 500;
+        margin-top: 12px;
+      }
+
+      .header__right-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        p {
+          margin: 0px;
+          color: $text-grey;
+          margin-left: auto;
+          font-size: 18px;
+        }
+
+        h1 {
+          margin: 0px;
+          font-size: 50px;
+          font-weight: 700;
+        }
+      }
+    }
+    .detail__ticket-details {
+      padding: 24px 38px 0 58px;
+    }
+    .ticket-details__header {
+      @include clipPath_polygon-header-for-ticket-download;
+      text-align: center;
+      p {
+        margin: 0px;
+        font-size: 18px;
+      }
+    }
+    .ticket-details__passenger-detail {
+      table {
+        width: 100%;
+        border-collapse: collapse;
+
+        tr {
+          background-color: $primary-color-light-200;
+          color: $text-grey;
+          height: 46px;
+
+          th {
+            font-weight: 500;
+            text-align: left;
+            font-size: 18px;
+
+            &:nth-child(1) {
+              padding-left: 24px;
+            }
+
+            &:nth-child(2) {
+              text-align: center;
+            }
+
+            &:nth-child(3) {
+              text-align: right;
+              padding-right: 24px;
+            }
+          }
+        }
+
+        tbody {
+          height: 46px;
+          border-bottom: 1px solid $border-color;
+
+          td {
+            font-size: 22px;
+            font-weight: 500;
+
+            &:nth-child(1) {
+              padding-left: 24px;
+            }
+
+            &:nth-child(2) {
+              text-align: center;
+            }
+
+            &:nth-child(3) {
+              text-align: right;
+              padding-right: 24px;
+            }
+          }
+        }
+      }
+    }
+    .flight-detail__header {
+      height: 36px;
+      background-color: $primary-color-light-200 !important;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      p {
+        color: $text-grey;
+        font-size: 16px;
+        margin: 0px;
+        margin-top: 8px;
+      }
+
+      .header__flight {
+        margin-left: 24px;
+      }
+    }
+
+    .flight-detail__flight-section {
+      display: grid;
+      padding-bottom: 12px;
+      border-bottom: 1px solid $border-color;
+
+      p {
+        margin: 0px 0px 4px 0px;
+      }
+
+      .flight-section__left-section {
+        padding-left: 24px;
+      }
+
+      .flight-section__middle-section,
+      .flight-section__right-section {
+        .middle-section__top,
+        .right-section__top {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+
+          .top__departure-code {
+            font-size: 16px;
+            font-weight: 500;
+          }
+        }
+
+        .top__departure-date {
+          display: flex;
+          align-items: center;
+
+          .departure-date {
+            font-weight: 500;
+            font-size: 14px;
+          }
+
+          .local-time {
+            font-size: 10px;
+            color: $secondary-color;
+            margin-left: 4px;
+          }
+        }
+
+        .airport-name {
+          font-size: 14px;
+        }
+
+        .departure-terminal {
+          font-weight: 500;
+          font-size: 14px;
+        }
+      }
+      .flight-section__left-section {
+        padding-left: 0px;
+        .airline-name {
+          font-size: 12px;
+        }
+        .airline-number {
+          font-size: 18px;
+          font-weight: 500;
+        }
+      }
+      .flight-section_left-section,
+      .flight-section_middle-section,
+      .flight-section_right-section {
+        border-bottom: 1px solid $border-color;
+
+        .header__flight,
+        .header__from,
+        .header__to {
+          height: 36px;
+          background-color: $primary-color-light-200;
+          display: grid;
+          align-items: center;
+          padding-left: 10px;
+          font-weight: 600;
+          font-size: 14px;
+        }
+      }
+
+      .transit-detail {
+        height: 100%;
+        display: grid;
+
+        .transit-left-section {
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+
+        .transit-right-section {
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+      }
+
+      .iternary-section__cabin-detail {
+        display: grid;
+        grid-template-columns: 1fr;
+        padding: 12px 0px 18px 0px;
+
+        p {
+          margin: 0px 0px 4px 0px;
+          color: $text-grey;
+        }
+
+        .cabin-detail__left-section {
+          padding-left: 0px;
+        }
+
+        .cabin-detail__right-section {
+          .right-section__check-in,
+          .right-section__carry-on {
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+    }
+
+    .iternary-section__cabin-detail {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 12px 0px 18px 0px;
+
+      p {
+        margin: 0px 0px 4px 0px;
+        color: $text-grey;
+      }
+
+      .cabin-detail__left-section {
+        padding-left: 24px;
+      }
+
+      .cabin-detail__right-section {
+        .right-section__check-in,
+        .right-section__carry-on {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+
+    .transit-detail {
+      height: 34px;
+      border-top: 1px solid $primary-color-light-200;
+      border-bottom: 1px solid $primary-color-light-200;
+      background-color: $yellow-background-color;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+
+      .transit-left-section {
+        display: flex;
+        align-items: center;
+        padding-left: 24px;
+      }
+
+      .transit-right-section {
+        display: flex;
+        align-items: center;
+        padding-right: 18px;
+      }
+
+      .transit-time,
+      .transit-location,
+      .transit-visa {
+        font-weight: 600;
+      }
+    }
+
+    .iternary-detail__header {
+      @include clipPath_polygon-header-for-ticket-download;
+      text-align: center;
+      p {
+        margin: 0px;
+        font-size: 18px;
+      }
+    }
+
+    .iternary-detail__flight-detail {
+      .flight-detail__header {
+        height: 46px;
+        background-color: $primary-color-light-200;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+
+        p {
+          color: $text-grey;
+          font-size: 20px;
+          margin: 0px;
+          margin-top: 8px;
+        }
+
+        .header__flight {
+          margin-left: 24px;
+        }
+      }
+
+      .flight-detail__flight-section {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding-bottom: 12px;
+        padding-top: 10px;
+        border-bottom: 1px solid $border-color;
+
+        p {
+          margin: 0px 0px 4px 0px;
+        }
+
+        .flight-section__left-section {
+          padding-left: 24px;
+        }
+
+        .flight-section__middle-section,
+        .flight-section__right-section {
+          .middle-section__top,
+          .right-section__top {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+
+            .top__departure-code {
+              font-size: 20px;
+              font-weight: 500;
+            }
+            p {
+              font-size: 16px;
+            }
+          }
+
+          .top__departure-date {
+            display: flex;
+            align-items: center;
+
+            .departure-date,
+            .depature-time {
+              font-weight: 500;
+              font-size: 20px;
+            }
+
+            .local-time {
+              font-size: 14px;
+              color: $secondary-color;
+              margin-left: 4px;
+            }
+          }
+
+          .airport-name {
+            font-size: 16px;
+          }
+
+          .departure-terminal {
+            font-weight: 500;
+            font-size: 16px;
+          }
+        }
+      }
+
+      .iternary-section__cabin-detail {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding: 12px 0px 18px 0px;
+
+        p {
+          margin: 0px;
+          color: $text-grey;
+          font-size: 16px;
+        }
+
+        .cabin-detail__left-section {
+          padding-left: 24px;
+        }
+
+        strong {
+          font-weight: 600;
+          font-size: 16px;
+        }
+
+        .cabin-detail__right-section {
+          .right-section__check-in,
+          .right-section__carry-on {
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+
+      .transit-detail {
+        height: 44px;
+        border-top: 1px solid $primary-color-light-200;
+        border-bottom: 1px solid $primary-color-light-200;
+        background-color: $yellow-background-color;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        align-items: center;
+
+        .transit-left-section {
+          display: flex;
+          align-items: center;
+          padding-left: 24px;
+        }
+
+        .transit-right-section {
+          display: flex;
+          align-items: center;
+          padding-right: 18px;
+        }
+
+        .transit-time,
+        .transit-location,
+        .transit-visa {
+          font-weight: 600;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+  .important-notice {
+    border-bottom: 1px solid #e6ebef;
+    ul {
+      margin: 4px 0px;
+    }
+    .notice-header {
+      margin-top: 13px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid $border-color;
+
+      p {
+        font-size: 16px;
+        color: $error;
+        margin-left: 24px;
+        font-weight: 500;
+      }
+    }
+  }
+  .greetings {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+@media (max-width: 850px) {
+  .ant-modal-content {
+    padding: 20px 4px !important;
+  }
+  .flight_ticket {
+    .flight-ticket__details {
+      margin: 0px;
+      .detail__header {
+        height: 100%;
+      }
+
+      .detail__main-section {
+        margin: 0;
+        margin-top: 18px;
+
+        .main-section___header {
+          padding: 4px;
+          flex-direction: column;
+          align-items: flex-start;
+
+          .header__right-section {
+            p {
+              margin: 0;
+            }
+          }
+        }
+
+        .detail__ticket-details {
+          padding: 4px;
+        }
+
+        .ticket-details__passenger-detail {
+          table {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+
+            tr {
+              display: grid;
+              height: 100% !important;
+              justify-items: center;
+
+              th {
+                text-align: center !important;
+
+                &:nth-child(1) {
+                  padding: 0 !important;
+                }
+
+                &:nth-child(3) {
+                  padding: 0 !important;
+                }
+              }
+            }
+
+            tbody {
+              display: grid;
+              height: 100% !important;
+              justify-items: center;
+              td {
+                font-size: 14px !important;
+                &:nth-child(1) {
+                  padding: 0 !important;
+                }
+
+                &:nth-child(3) {
+                  padding: 0 !important;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .download-btn-section {
+        margin-top: 10px;
+      }
+    }
+  }
+}
+
+.ticket-details__passenger-detail-booking {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 10px;
+
+  tr {
+    background-color: $primary-color;
+    color: $white;
+  }
+
+  td,
+  th {
+    border: 1px solid $table_border-color;
+    text-align: left;
+    padding: 8px;
+  }
+}
+
+.ticket-details__total-fare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .total-fare__amount {
+    font-size: 16px;
+  }
+}

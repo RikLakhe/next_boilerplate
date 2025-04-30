@@ -1,0 +1,43 @@
+export const PNR_ID = "PNRId";
+export const ADMIN_ID = "adminId";
+export const USER_ID = "userId";
+
+export const FLIGHT_SEARCH_URL = "/public/flights/search";
+export const FETCH_GEO_LOCATION_URL = "https://ipapi.co/json/";
+export const UPLOAD_DOCUMENT = "/document";
+export const CREATE_PNR = "/pnrs";
+export const PNR_FARE_RULE = "/pnrs/fare-rules";
+export const MAKE_FLIGHT_TICKET_PAYMENT_URL = "/payments/make-payment";
+export const FLIGHT_BOOKING_LIST_URL = "/pnrs/search";
+export const PNR_SESSION_SIGNOUT_URL = "/sessions/sign-out";
+export const FLIGHT_TICKET_DETAIL_VIEW_URL = `/pnrs/search/detail/${PNR_ID}`;
+export const CREATE_A_FLIGHT_TICKET_URL = "/tickets";
+export const INVITE_USER_URL = "/customers/invite";
+export const USERS_LIST_WITH_CRITERIA_URL = "/invitations/search/all";
+export const ADMIN_DETAIL_UPDATE_URL = "/invitations";
+export const USER_EMAIL_OR_MOBILE_VERIFICATION_URL = "/register/verify";
+export const USER_LOGIN_URL = "/auth";
+export const USER_REGISTER_URL = "/register";
+export const USER_DETAIL_FETCH_URL = `/customers/search/detail/${USER_ID}`;
+export const USER_INFO_UPDATE_URL = `/customers/${USER_ID}`;
+export const USER_EMAIL_VERIFICATION_URL = "/customers/verify-request/email";
+export const USER_EMAIL_VERIFY_WITH_OTP_URL = "/customers/verify/email";
+export const USER_AFNUU_BALANCE_TOPUP_URL =
+  "balance-transactions/initiate-topup";
+export const USER_AFNUU_BALANCE_FETCH_LIST_URL =
+  "/balance-transactions/statements";
+export const USER_ALL_LIST_URL = "/customers/search/invited-customers/all";
+export const TWO_FACTOR_AUTHENTICATION_URL = "/payments/request-otp";
+export const UPLOAD_AGENT_LOGO_URL = "/customers/logo";
+export const FETCH_AGENT_LOGO_URL = "/customers/logo";
+export const FETCH_CONNECTIPS_TOKEN = "/pnrs/initiate-ticket";
+export const UPSERT_CONNECTIPS_CONFIRM_PAYMENT = "/payments/confirm-payment";
+export const UPSERT_CONNECTIPS_PAYMENT_ERROR = "/payments/error";
+export const PAYMENT_METHODS_LIST_URL = "/payment-gateways/search/all";
+export const PAYMENT_LOGS_LIST_URL = "/payment-logs/search";
+export const AAFNUU_BALANCE_TOP_UP_SUCCESS_URL = "/payments/confirm-topup";
+export const AAFNUU_BALANCE_TOP_UP_FAILURE_URL = "/payments/topup-error";
+export const AAFNUU_FLIGHT_CONFIG_URL = "/public/configs/ads";
+export const AAFNUU_USER_FORGOT_PASSWORD_URL = "/auth/forgot-password";
+export const AAFNUU_USER_RESET_PASSWORD_URL = "/auth/reset-password";
+export const ACCEPT_FARE_CHANGE_PNR_URL = "/pnrs/accept-fare-change";

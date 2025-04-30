@@ -1,0 +1,75 @@
+@import "./variables.scss";
+
+.authorized-header__mobile-view {
+  background-color: $background-color;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 8px;
+  .mobile-view__left-section {
+    .mobile-view__image {
+      width: 100px;
+    }
+    .mobile-view__navigation {
+      display: flex;
+      align-items: center;
+      .navigation__flight-search-details {
+        display: flex;
+        flex-direction: column;
+        p {
+          margin: 0px;
+        }
+        .flight-search-details__airport-infos {
+          display: flex;
+          align-items: center;
+          .flight-search-details__airport-names {
+            font-weight: 600;
+            margin-left: 8px;
+            margin-right: 8px;
+          }
+        }
+        .flight-search-details__date-infos {
+          display: flex;
+          margin-left: 8px;
+          margin-top: 6px;
+          .date-infos__departing-date {
+            margin-right: 4px;
+          }
+          .date-infos__returning-date {
+            display: flex;
+            margin-left: 4px;
+            span {
+              margin-left: 4px;
+            }
+          }
+          .date-infos__travller-count {
+            margin-left: 4px;
+          }
+        }
+      }
+    }
+  }
+  .mobile-view__right-section {
+    display: flex;
+    align-items: center;
+    .dashboard_display {
+      margin-right: 14px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .right-section__profile-details {
+      display: flex;
+      align-items: center;
+      .profile-details__client {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (width >= 700px) {
+  .authorized-header__mobile-view {
+    display: none;
+  }
+}

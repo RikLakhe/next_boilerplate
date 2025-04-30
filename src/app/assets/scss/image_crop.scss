@@ -1,0 +1,56 @@
+@import "./variables.scss";
+
+.image_crop_container {
+  width: fit-content !important;
+  .ant-upload.ant-upload-select {
+    all: unset !important;
+    .ant-upload {
+      justify-content: flex-start !important;
+
+      .show {
+        display: block !important;
+      }
+      .none {
+        display: none !important;
+      }
+    }
+  }
+  .ant-upload-list-item-container {
+    width: 200px !important;
+    height: 75px !important;
+    a {
+      img {
+        object-fit: cover !important;
+      }
+    }
+    .ant-upload-list-item-actions {
+      svg {
+        fill: white !important;
+      }
+    }
+  }
+  button {
+    margin-top: 8px;
+  }
+}
+.ant-btn-primary {
+  background-color: $primary-color;
+  &:hover {
+    background-color: $primary-color !important;
+    opacity: 0.9;
+  }
+}
+.ant-btn-default:hover {
+  border-color: $primary-color !important;
+  color: $primary-color !important;
+}
+.ant-upload-select {
+  width: 200px !important;
+  margin-top: 10px;
+}
+
+.main-upload-btn {
+  &.none {
+    display: none;
+  }
+}

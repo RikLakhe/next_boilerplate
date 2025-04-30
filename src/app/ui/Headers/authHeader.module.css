@@ -1,0 +1,17 @@
+.authHeader {
+  height: 59px;
+}
+.authHeader_logo {
+  height: 31px;
+  min-height: 59px;
+  display: flex;
+  align-items: center;
+  margin-left: 32px;
+}
+.authHeader_logo_only {
+  cursor: pointer;
+}
+.authHeader_bottom_section {
+  height: 68px;
+  background-image: linear-gradient(to right, #237eff, #e30a89);
+}

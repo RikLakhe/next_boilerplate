@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: "afnuu-app"
+  name: "afnuu-app"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "afnuu-app"
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "afnuu-app"
+    spec:
+      containers:
+        - image: pacesetter.azurecr.io/afnuu-fe:${BUILD_NUMBER}
+          imagePullPolicy: IfNotPresent
+          name: "afnuu-app"
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+      imagePullSecrets:
+        - name: regcred

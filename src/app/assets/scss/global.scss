@@ -1,0 +1,292 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+@import "./variables.scss";
+@import "./mixin.scss";
+
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: "Quicksand", sans-serif;
+  font-size: 12px;
+  background-color: $background-color;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+
+  &:hover {
+    color: $primary-color-dark;
+  }
+}
+
+h1 {
+  color: $grey-color;
+}
+
+h2 {
+  color: $grey-color;
+  font-weight: 600;
+  margin: 0px;
+}
+
+h3 {
+  color: $grey-color;
+}
+
+h4 {
+  color: $grey-color;
+}
+
+h5 {
+  color: $grey-color;
+  margin: 0px;
+}
+
+.btn-primary {
+  @include button-primary-styles;
+}
+
+.btn-primary:hover {
+  background-color: $primary-color !important;
+  opacity: 0.9;
+
+  span {
+    color: $white !important;
+  }
+}
+
+.btn-borderless {
+  background-color: rgb(var(--background-start-rgb));
+  border: none;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  gap: 10px;
+}
+
+.btn-borderless:hover {
+  background-color: $primary-color-light-100;
+  border-radius: 24px;
+  color: $grey-color-100 !important;
+}
+.btn-custom {
+  background-color: rgba(255, 255, 255, 0.505) !important;
+  font-weight: 600;
+  border-radius: 24px;
+}
+
+.btn-primary-alternate {
+  @include button-primary-alternate-styles;
+  transition: all 1s ease-in-out;
+
+  &:hover {
+    transition: all 1s ease-in-out;
+    opacity: 0.8 !important;
+  }
+}
+
+.custom-label {
+  p {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    margin: 0px;
+    margin-top: 20px;
+  }
+}
+
+.form__fields {
+  width: 300px;
+}
+
+.ant-select-selector {
+  min-width: 76px;
+  width: 76px !important;
+  border: none !important;
+}
+
+.ant-select-selector:focus-within {
+  .ant-input {
+    border: 1px solid $input-border-color;
+  }
+}
+
+.ant-input-group:hover,
+.ant-input-group:focus-within {
+  .ant-input-group-addon {
+    border: 1px solid $input-border-color;
+    border-right: none;
+    border-radius: 0px !important;
+  }
+}
+
+.form__fields_phone_number {
+  .ant-input {
+    width: 224px !important;
+    border-left: none;
+    border-radius: 0px !important;
+  }
+
+  .ant-input-group-addon {
+    min-width: 76px !important;
+    background-color: $white;
+
+    .ant-select-selector:hover {
+      border: none !important;
+    }
+  }
+}
+
+.form__fields_line {
+  position: absolute;
+  border: 1px solid red;
+  height: 100px;
+  width: 100px;
+}
+
+.ant-input {
+  width: 300px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+.ant-input-password {
+  height: 40px;
+  border-radius: 0px;
+
+  .ant-input {
+    height: 30px;
+  }
+}
+
+.ant-input-group-addon,
+.ant-select-selector {
+  color: $grey-color-light !important;
+  border-radius: 0px !important;
+}
+
+.errors {
+  color: $red;
+  margin-left: 4px;
+  font-size: 12px;
+}
+
+.ant-drawer-header-title {
+  justify-content: right;
+}
+
+.user_badge {
+  border: 1px solid $primary-color;
+  width: 26px;
+  height: 26px;
+  max-height: 26px;
+  max-width: 26px;
+  border-radius: 50%;
+  background-color: $grey-color-200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $text-black;
+  cursor: pointer;
+}
+
+.ant-input-disabled {
+  border: 0.5px solid;
+  color: rgba(0, 0, 0, 07) !important;
+  background-color: rgb(175 170 170 / 4%) !important;
+}
+
+.ant-select-disabled {
+  .ant-select-selector {
+    color: rgba(0, 0, 0, 07) !important;
+    background-color: rgb(175 170 170 / 4%) !important;
+  }
+}
+
+.ant-picker-disabled {
+  border: 0.5px solid;
+  color: rgba(0, 0, 0, 07) !important;
+  background-color: rgb(175 170 170 / 4%) !important;
+
+  input {
+    color: rgba(0, 0, 0, 0.6) !important;
+  }
+}
+
+.ant-input-group-wrapper-disabled {
+  .ant-input-group-addon {
+    background-color: rgb(175 170 170 / 4%) !important;
+
+    &:hover {
+      border-top: 0.5px solid $input-border-color-light !important;
+      border-left: 0.5px solid $input-border-color-light !important;
+      border-bottom: 0.5px solid $input-border-color-light !important;
+    }
+  }
+}
+
+.airport_lists_loading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  padding: 0px 12px 0px 12px;
+  border-bottom: 0.5px solid var(--border-color);
+}
+
+@media only screen and (max-width: 800px) {
+  .form__fields {
+    width: 260px;
+  }
+  .ant-input {
+    width: 260px;
+  }
+  .form__fields_phone_number {
+    .ant-input {
+      width: 180px !important;
+    }
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .form__fields {
+    width: 220px;
+  }
+  .ant-input {
+    width: 220px;
+  }
+  .form__fields_phone_number {
+    .ant-input {
+      width: 140px !important;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .form__fields {
+    width: 250px;
+  }
+  .ant-input {
+    width: 250px;
+  }
+  .form__fields_phone_number {
+    .ant-input {
+      width: 120px !important;
+    }
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .form__fields {
+    width: 250px;
+  }
+  .ant-input {
+    width: 250px;
+  }
+  .form__fields_phone_number {
+    .ant-input {
+      width: 100% !important;
+    }
+  }
+}

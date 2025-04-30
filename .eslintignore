@@ -1,0 +1,6 @@
+*.scss
+*.css
+/dist
+/deploy
+/node_modules
+next.config.js

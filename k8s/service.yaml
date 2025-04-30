@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "afnuu-app"
+  name: "afnuu-app"
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    app: "afnuu-app"
+  sessionAffinity: None
+  type: ClusterIP

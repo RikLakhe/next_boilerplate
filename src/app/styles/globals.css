@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --foreground-rgb: #f2f3f9;
+  --grey-color-light: #7c7c7c;
+  --pending-color: #dd9200;
+  --grey-color-300: #625b71;
+  --primary-color: #6750a4;
+  --text-grey: #6c7792;
+  --text-black: #1d1b20;
+  --primary-color-light-200: #e9e9f2;
+  --border-color: #e6ebef;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  font-family: "Quicksand", sans-serif !important;
+}
+
+#globalLoader {
+  position: fixed;
+  z-index: 9999;
+  top: 50%;
+  left: 50%;
+  background-color: #fff;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.custom-toast {
+  height: 40px;
+  width: 240px;
+  font-size: 14px;
+}
