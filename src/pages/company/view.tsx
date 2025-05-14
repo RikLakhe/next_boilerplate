@@ -23,6 +23,7 @@ import {
   GiftOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
+import { GetServerSideProps } from 'next';
 
 const { Title, Text, Paragraph } = Typography;
 

@@ -1,8 +1,10 @@
+import { AppStore } from "@/app/store";
 import "@/app/styles/globals.css";
 import { Spin } from "antd";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { Provider } from "react-redux";
 
 function Loading() {
   return (
@@ -43,8 +45,11 @@ export default function App({ Component, pageProps }: AppProps) {
         }}>
           <Spin size="large" />
         </div>
-      )}
+      )}\
+      <Provider store={AppStore}>
       <Component {...pageProps} />
+      </Provider>
+      
     </>
   );
 }
