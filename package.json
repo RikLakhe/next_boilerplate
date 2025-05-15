@@ -5,25 +5,30 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:clean": "rm -rf .next && npm run dev",
+    "db:reset": "npm run prisma:reset && npm run prisma:seed",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ignore-path .gitignore --ignore-path .eslintignore --ext .ts src/",
     "lint:fix": "eslint --ignore-path .gitignore --ignore-path .eslintignore --ext .ts src/ --fix .",
     "deploy": "dotenv -e .env.prod next build",
-    "prepare": "husky install",
+    "prepare": "husky",
     "prettify": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "postinstall": "prisma generate",
     "seed": "npx ts-node prisma/seed.ts",
     "prisma": "prisma",
     "prisma:generate": "prisma generate",
     "prisma:studio": "prisma studio",
-    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:migrate": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:format": "prisma format",
     "prisma:db-pull": "prisma db pull",
     "prisma:db-push": "prisma db push",
     "prisma:reset": "prisma migrate reset --force",
-    "prisma:seed": "node prisma/seed.js"
+    "prisma:seed": "node prisma/seed.js",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test:e2e": "start-server-and-test dev http://localhost:3000 cypress:run",
+    "test:e2e:open": "start-server-and-test dev http://localhost:3000 cypress:open"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.23.0",
@@ -74,9 +79,11 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/cypress": "^10.0.3",
     "@types/node": "^20",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "cypress": "^14.3.3",
     "dotenv-cli": "^7.4.2",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -92,6 +99,7 @@
     "lint-staged": "^15.2.7",
     "prettier": "^3.3.2",
     "reinspect": "^1.1.0",
+    "start-server-and-test": "^2.0.12",
     "tailwindcss": "^4",
     "tslint": "^5.20.1",
     "tslint-config-standard": "^9.0.0",
@@ -101,5 +109,16 @@
     "@types/react": "19.1.2",
     "@types/react-dom": "19.1.2",
     "eslint-plugin-react-hooks": "^5.2.0"
-  }
+  },
+  "husky": {
+       "hooks": {
+         "pre-commit": "lint-staged"
+       }
+     },
+     "lint-staged": {
+       "*.{js,jsx,ts,tsx}": [
+         "prettify",
+         "lint:fix"
+       ]
+     }
 }
