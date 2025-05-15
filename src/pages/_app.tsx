@@ -1,55 +1,95 @@
-import { AppStore } from "@/app/store";
 import "@/app/styles/globals.css";
-import { Spin } from "antd";
 import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
+import { ConfigProvider, Spin, theme } from "antd";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
+import { NextPage } from "next";
+import { SessionProvider } from "next-auth/react";
+import { useRouter } from "next/router";
+import { AppStore } from "@/app/store";
 
-function Loading() {
-  return (
-    <div style={{
-      minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center'
-    }}>
-      <Spin size="large" />
-    </div>
-  );
-}
+const { darkAlgorithm } = theme;
 
-export default function App({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout<P = NonNullable<unknown>, IP = P> = NextPage<
+  P,
+  IP
+> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+const App = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const handleStart = () => setLoading(true);
-    const handleComplete = () => setLoading(false);
+    const handleStart = (url: string) => {
+      if (router.asPath !== url) {
+        setLoading(true);
+      }
+    };
+    const handleComplete = () => {
+      return setLoading(false);
+    };
 
-    router.events.on('routeChangeStart', handleStart);
-    router.events.on('routeChangeComplete', handleComplete);
-    router.events.on('routeChangeError', handleComplete);
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
 
     return () => {
-      router.events.off('routeChangeStart', handleStart);
-      router.events.off('routeChangeComplete', handleComplete);
-      router.events.off('routeChangeError', handleComplete);
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
     };
   }, [router]);
 
+  const getLayout =
+    Component.getLayout ??
+    ((page) => {
+      return page;
+    });
+
   return (
-    <>
-      {loading && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'rgba(255,255,255,0.7)', zIndex: 9999
-        }}>
-          <Spin size="large" />
-        </div>
-      )}\
-      <Provider store={AppStore}>
-      <Component {...pageProps} />
-      </Provider>
-      
-    </>
+    <SessionProvider session={session}>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#7c3aed",
+            wireframe: false,
+          },
+          algorithm: darkAlgorithm,
+        }}
+      >
+        {loading && (
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "rgba(255,255,255,0.2)",
+              zIndex: 9999,
+            }}
+          >
+            <Spin size="large" />
+          </div>
+        )}
+        <Provider store={AppStore}>
+          {getLayout(<Component {...pageProps} />)}
+        </Provider>
+      </ConfigProvider>
+    </SessionProvider>
   );
-}
+};
+
+export default App;
