@@ -1,4 +1,4 @@
-import { Prisma, areas as Area } from "@prisma/client";
+import { Prisma, Area } from "@prisma/client";
 import { prisma } from "@/server/common/prisma/client"; // Import the singleton instance
 import { HttpException } from "@/server/common/exceptions/http-exception";
 import logger from "@/server/common/utils/logger.util";
@@ -12,7 +12,7 @@ export class AreasService {
 
   async create(createAreaDto: CreateAreaDto): Promise<Area> {
     try {
-      return await this.prismaClient.areas.create({
+      return await this.prismaClient.area.create({
         data: createAreaDto,
       });
     } catch (error) {
@@ -35,7 +35,7 @@ export class AreasService {
 
   async findAll(): Promise<Area[]> {
     try {
-      return await this.prismaClient.areas.findMany();
+      return await this.prismaClient.area.findMany();
     } catch (error) {
       logger.error("Error finding all areas:", error);
       throw new HttpException(500, "Failed to retrieve areas.");
@@ -44,7 +44,7 @@ export class AreasService {
 
   async findOne(id: number): Promise<Area | null> {
     try {
-      const area = await this.prismaClient.areas.findUnique({
+      const area = await this.prismaClient.area.findUnique({
         where: { id },
       });
       if (!area) {
@@ -64,7 +64,7 @@ export class AreasService {
       // First check if area exists
       await this.findOne(id);
 
-      return await this.prismaClient.areas.update({
+      return await this.prismaClient.area.update({
         where: { id },
         data: updateAreaDto,
       });
@@ -100,7 +100,7 @@ export class AreasService {
       // First check if area exists
       await this.findOne(id);
 
-      return await this.prismaClient.areas.delete({
+      return await this.prismaClient.area.delete({
         where: { id },
       });
     } catch (error) {

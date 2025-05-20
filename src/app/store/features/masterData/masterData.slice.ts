@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { MasterData } from "@prisma/client";
 
-import { MasterDataProps } from "@/types/masterData";
 import {
   fetchMasterData,
   storeMasterData,
@@ -8,28 +8,28 @@ import {
 } from "./masterDataAPI.service";
 
 interface MasterDataState {
-  data: MasterDataProps[];
+  data: MasterData[];
   loading: boolean;
-  error: string | null;
-  actionData: MasterDataProps | null;
+  error: string | undefined;
+  actionData: MasterData | null;
   actionLoading: boolean;
-  actionError: string | null;
+  actionError: string | undefined;
 }
 
 const initialState: MasterDataState = {
   data: [],
   loading: false,
-  error: null,
+  error: undefined,
   actionData: null,
   actionLoading: false,
-  actionError: null,
+  actionError: undefined,
 };
 
 const masterDataSlice = createSlice({
   name: "masterData",
   initialState,
   reducers: {
-    setMasterData(state, action: PayloadAction<MasterDataProps[]>) {
+    setMasterData(state, action: PayloadAction<MasterData[]>) {
       state.data = action.payload;
     },
   },
@@ -44,7 +44,7 @@ const masterDataSlice = createSlice({
       })
       .addCase(fetchMasterData.rejected, (state, { error }) => {
         state.loading = false;
-        state.error = error.message || null;
+        state.error = error.message;
       })
       .addCase(storeMasterData.pending, (state) => {
         state.actionLoading = true;
@@ -56,7 +56,7 @@ const masterDataSlice = createSlice({
       })
       .addCase(storeMasterData.rejected, (state, { error }) => {
         state.actionLoading = false;
-        state.actionError = error.message || null;
+        state.actionError = error.message || undefined;
       })
       .addCase(updateMasterData.pending, (state) => {
         state.actionLoading = true;
@@ -74,7 +74,7 @@ const masterDataSlice = createSlice({
       })
       .addCase(updateMasterData.rejected, (state, { error }) => {
         state.actionLoading = false;
-        state.actionError = error.message || null;
+        state.actionError = error.message || undefined;
       });
   },
 });

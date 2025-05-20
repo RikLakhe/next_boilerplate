@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import masterDataReducer from "./features/masterData/masterData.slice";
+import eventsReducer from "./features/events/events.slice";
 // import other reducers...
 
 const rootReducer = combineReducers({
   masterData: masterDataReducer,
+  events: eventsReducer,
 });
 
 export const makeStore = () => {

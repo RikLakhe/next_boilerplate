@@ -6,12 +6,18 @@ import { HttpException } from "@/server/common/exceptions/http-exception";
 import { MasterDataService } from "./masterData.service";
 import { CreateMasterDataDto } from "./dtos/create-masterData.dto";
 import { UpdateMasterDataDto } from "./dtos/update-masterData.dto";
+import { AuditLogsService } from "../auditLogs/auditLogs.service";
+import { CreateAuditLogsDto } from "../auditLogs/dtos/create_auditLog.dto";
 
+const ENTITY = "MASTER_DATA";
 export class MasterDataController {
   private readonly masterDataService: MasterDataService;
 
+  private readonly auditLogService: AuditLogsService;
+
   constructor() {
     this.masterDataService = new MasterDataService();
+    this.auditLogService = new AuditLogsService();
   }
 
   async findAll(req: NextApiRequest, res: NextApiResponse) {
@@ -26,15 +32,8 @@ export class MasterDataController {
   async list(req: NextApiRequest, res: NextApiResponse) {
     try {
       const masterData = await this.masterDataService.findAll();
-      const dropdownList = masterData.map((data) => {
-        return {
-          code: data.id,
-          label: data.label,
-          entity_type: data.entity_type,
-          color: data.color,
-        };
-      });
-      res.status(200).json(dropdownList);
+
+      res.status(200).json(masterData);
     } catch (error) {
       MasterDataController.handleError(error, res);
     }
@@ -45,6 +44,18 @@ export class MasterDataController {
       const createDto = await validateDto(CreateMasterDataDto, req.body);
 
       const newMasterData = await this.masterDataService.create(createDto);
+
+      const createAuditLogDto = await validateDto(CreateAuditLogsDto, {
+        entity: ENTITY,
+        entityId: newMasterData.id,
+        newValue: newMasterData,
+        oldValue: {},
+        requestType: "CREATE",
+        requestedBy: 1,
+      });
+
+      await this.auditLogService.create(createAuditLogDto);
+
       res.status(201).json(newMasterData);
     } catch (error) {
       MasterDataController.handleError(error, res);
@@ -59,7 +70,19 @@ export class MasterDataController {
         updateDto.id,
         updateDto,
       );
-      res.status(201).json(newMasterData);
+
+      const createAuditLogDto = await validateDto(CreateAuditLogsDto, {
+        entity: ENTITY,
+        entityId: updateDto.id,
+        newValue: newMasterData.masterData,
+        oldValue: newMasterData.oldValue,
+        requestType: "UPDATE",
+        requestedBy: 1,
+      });
+
+      await this.auditLogService.create(createAuditLogDto);
+
+      res.status(200).json(newMasterData);
     } catch (error) {
       MasterDataController.handleError(error, res);
     }

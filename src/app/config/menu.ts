@@ -183,8 +183,13 @@ export const ADMIN_MENU_CONFIG = [
         path: "/admin/company",
       },
       {
+        key: "admin-fiscal-year",
+        label: "Fiscal Year",
+        path: "/admin/company/fiscal",
+      },
+      {
         key: "admin-leaves",
-        label: "leaves",
+        label: "Leaves",
         path: "/admin/company/leaves",
       },
     ],
@@ -214,6 +219,11 @@ export const ADMIN_MENU_CONFIG = [
     key: "admin-settings",
     label: "Settings",
     path: "/admin/settings",
+  },
+  {
+    key: "admin-database",
+    label: "Database",
+    path: "/admin/database",
   },
 ];
 

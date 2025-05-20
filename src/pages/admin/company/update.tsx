@@ -5,7 +5,6 @@ import {
   Form,
   Input,
   Button,
-  DatePicker,
   Checkbox,
   Switch,
   Card,
@@ -16,20 +15,14 @@ import {
   Col,
   Divider,
   Table,
-  Radio,
   TimePicker,
   Empty,
-  // Select,
 } from "antd";
-import {
-  PlusOutlined,
-  MinusCircleOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import AdminLayout from "@/app/components/layout/AdminLayout";
 import { LayoutPageProps } from "@/types";
-import { FiscalYearData, WorkingWeekData } from "@/types/company";
+import { WorkingWeekData } from "@/types/company";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -204,75 +197,6 @@ const CompanyUpdatePage: LayoutPageProps = () => {
       isActive: false,
       startTime: defaultStartTime,
       endTime: defaultEndTime,
-    },
-  ];
-
-  const fiscalYearColumns = [
-    {
-      title: "Start Date",
-      dataIndex: "startDate",
-      key: "startDate",
-      width: "30%",
-      render: (_: unknown, record: FiscalYearData) => {
-        return (
-          <Form.Item name={["fiscalYears", record.key, "startDate"]} noStyle>
-            <DatePicker style={{ width: "100%" }} />
-          </Form.Item>
-        );
-      },
-    },
-    {
-      title: "End Date",
-      dataIndex: "endDate",
-      key: "endDate",
-      width: "30%",
-      render: (_: unknown, record: FiscalYearData) => {
-        return (
-          <Form.Item name={["fiscalYears", record.key, "endDate"]} noStyle>
-            <DatePicker style={{ width: "100%" }} />
-          </Form.Item>
-        );
-      },
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      width: "30%",
-      render: (_: unknown, record: FiscalYearData) => {
-        return (
-          <Form.Item name={["fiscalYears", record.key, "isActive"]} noStyle>
-            <Radio.Group>
-              <Radio value>Active</Radio>
-              <Radio value={false}>Inactive</Radio>
-            </Radio.Group>
-          </Form.Item>
-        );
-      },
-    },
-    {
-      title: "Action",
-      key: "action",
-      width: "10%",
-      render: (_: unknown, record: FiscalYearData) => {
-        return (
-          <Button
-            type="text"
-            danger
-            icon={<DeleteOutlined />}
-            onClick={() => {
-              const fiscalYears = form.getFieldValue("fiscalYears") || [];
-              form.setFieldsValue({
-                fiscalYears: fiscalYears.filter(
-                  (_: FiscalYearData, index: number) => {
-                    return index !== record.key;
-                  },
-                ),
-              });
-            }}
-          />
-        );
-      },
     },
   ];
 
@@ -562,35 +486,6 @@ const CompanyUpdatePage: LayoutPageProps = () => {
           {/* Company Settings Section */}
           <Col span={24}>
             <Card title="Company Settings">
-              <Divider orientation="left">Fiscal Years</Divider>
-              <Form.List name="fiscalYears">
-                {(fields, { add }) => {
-                  return (
-                    <>
-                      <Table
-                        columns={fiscalYearColumns}
-                        dataSource={fields.map((field, index) => {
-                          return { ...field, key: index };
-                        })}
-                        pagination={false}
-                        size="middle"
-                      />
-                      <Button
-                        type="dashed"
-                        onClick={() => {
-                          return add();
-                        }}
-                        block
-                        icon={<PlusOutlined />}
-                        style={{ marginTop: 16 }}
-                      >
-                        Add Fiscal Year
-                      </Button>
-                    </>
-                  );
-                }}
-              </Form.List>
-
               <Divider orientation="left">Working Week</Divider>
               <Form.Item
                 name="workingWeek"

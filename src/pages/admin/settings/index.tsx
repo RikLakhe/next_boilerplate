@@ -1,7 +1,4 @@
 import React, { ReactElement, useEffect, useState } from "react";
-
-import AdminLayout from "@/app/components/layout/AdminLayout";
-import { LayoutPageProps } from "@/types";
 import {
   Button,
   Col,
@@ -18,14 +15,18 @@ import {
   Table,
   theme,
   Alert,
+  notification,
 } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content } from "antd/es/layout/layout";
+
+import AdminLayout from "@/app/components/layout/AdminLayout";
+import { LayoutPageProps } from "@/types";
 import { AdminTitleBanner } from "@/app/components/shared/TitleBanner";
 import { MasterDataMenuInterface } from "@/types/menu";
 import { MASTER_DATA_MENU_CONFIG } from "@/app/config/menu";
 import { MasterDataAppController } from "@/server/modules/masterData/masterData.appController";
-import { MasterDataProps } from "@/types/masterData";
+
 import { MASTER_DATA_DROPDOWN } from "@/app/config/masterData";
 import { useMasterData } from "@/app/hooks/useMasterData";
 import { useAppDispatch } from "@/app/hooks/useAppDispatch";
@@ -35,6 +36,7 @@ import {
   updateMasterData,
 } from "@/app/store/features/masterData/masterDataAPI.service";
 import { setMasterData } from "@/app/store/features/masterData/masterData.slice";
+import { MasterData } from "@prisma/client";
 
 const { Option } = Select;
 
@@ -62,7 +64,7 @@ const AdminSettingsPage: LayoutPageProps = ({
   initialMasterData,
   initialMasterDataError,
 }: {
-  initialMasterData: MasterDataProps[];
+  initialMasterData: MasterData[];
   initialMasterDataError: string;
 }) => {
   const dispatch = useAppDispatch();
@@ -72,18 +74,19 @@ const AdminSettingsPage: LayoutPageProps = ({
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const [formError, setFormError] = useState<string | undefined>(undefined);
   const [entityType, setEntityType] = useState<string | undefined>(undefined);
   const [selectedKey, setSelectedKey] = useState<string>(
     MASTER_DATA_MENU_CONFIG[0].key,
   );
 
-  const [selectedRecord, setSelectedRecord] = useState<
-    MasterDataProps | undefined
-  >(undefined);
+  const [selectedRecord, setSelectedRecord] = useState<MasterData | undefined>(
+    undefined,
+  );
 
   const [open, setOpen] = useState(false);
 
-  const showDrawer = (data?: MasterDataProps | undefined) => {
+  const showDrawer = (data?: MasterData | undefined) => {
     setSelectedRecord(data);
     setOpen(true);
   };
@@ -92,6 +95,7 @@ const AdminSettingsPage: LayoutPageProps = ({
     setSelectedRecord(undefined);
     form.resetFields();
     setOpen(false);
+    setFormError(undefined);
   };
 
   const renderMenuItems = (items: MasterDataMenuInterface[]) => {
@@ -167,12 +171,12 @@ const AdminSettingsPage: LayoutPageProps = ({
       : []),
     {
       title: "Is Active",
-      dataIndex: "is_active",
-      key: "is_active",
-      render: (is_active: boolean) => {
+      dataIndex: "isActive",
+      key: "isActive",
+      render: (isActive: boolean) => {
         return (
           <Switch
-            value={is_active}
+            value={isActive}
             onClick={() => {}}
             checkedChildren="Enabled"
             unCheckedChildren="Disabled"
@@ -186,7 +190,7 @@ const AdminSettingsPage: LayoutPageProps = ({
     {
       title: "Action",
       key: "action",
-      render: (record: MasterDataProps) => {
+      render: (record: MasterData) => {
         return (
           <Button
             type="default"
@@ -205,14 +209,14 @@ const AdminSettingsPage: LayoutPageProps = ({
   useEffect(() => {
     if (selectedRecord) {
       form.setFieldsValue({
-        entity_type: selectedRecord.entity_type,
+        entityType: selectedRecord.entityType,
         code: selectedRecord.code,
         label: selectedRecord.label,
         color: selectedRecord.color,
-        is_active: selectedRecord.is_active,
+        isActive: selectedRecord.isActive,
       });
 
-      setEntityType(selectedRecord.entity_type);
+      setEntityType(selectedRecord.entityType);
     } else {
       form.resetFields();
       setEntityType(undefined);
@@ -268,10 +272,10 @@ const AdminSettingsPage: LayoutPageProps = ({
           </Menu>
         </Sider>
         <Content style={{ padding: "0 24px", minHeight: 280 }}>
-          <Table<MasterDataProps>
+          <Table<MasterData>
             columns={renderColumn}
             dataSource={masterData.filter((value) => {
-              return value.entity_type === selectedKey;
+              return value.entityType === selectedKey;
             })}
           />
         </Content>
@@ -302,13 +306,15 @@ const AdminSettingsPage: LayoutPageProps = ({
           </Space>
         }
       >
-        {error && <Alert message={error} type="error" closable closeIcon />}
+        {(error || formError) && (
+          <Alert message={error || formError} type="error" closable closeIcon />
+        )}
         <Form
           form={form}
           layout="vertical"
           onValuesChange={(changedValues) => {
-            if (changedValues.entity_type) {
-              setEntityType(changedValues.entity_type);
+            if (changedValues.entityType) {
+              setEntityType(changedValues.entityType);
             }
           }}
           onFinish={async (values) => {
@@ -319,18 +325,37 @@ const AdminSettingsPage: LayoutPageProps = ({
                   ? values.color
                   : values.color?.toHexString(),
             };
+
             if (selectedRecord) {
               formData.id = selectedRecord.id;
-              dispatch(updateMasterData(formData));
+              try {
+                await dispatch(updateMasterData(formData)).unwrap();
+                notification.success({
+                  message: "Master Data update successful.",
+                  placement: "topRight",
+                });
+                onClose();
+              } catch (err) {
+                setFormError(err.message);
+              }
             } else {
-              dispatch(storeMasterData(formData));
+              try {
+                await dispatch(storeMasterData(formData)).unwrap();
+                notification.success({
+                  message: "Master Data create successful.",
+                  placement: "topRight",
+                });
+                onClose();
+              } catch (err) {
+                setFormError(err.message);
+              }
             }
           }}
         >
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
-                name="entity_type"
+                name="entityType"
                 label="Entity"
                 rules={[
                   { required: true, message: "Please choose the entity" },
@@ -399,7 +424,7 @@ const AdminSettingsPage: LayoutPageProps = ({
           {selectedRecord && (
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item name="is_active" label="Is Active">
+                <Form.Item name="isActive" label="Is Active">
                   <Switch
                     checkedChildren="Enabled"
                     unCheckedChildren="Disabled"

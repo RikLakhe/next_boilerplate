@@ -42,7 +42,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             transition={{ type: "tween" }} // Set the transition to linear
             style={{
               padding: 10,
-              minHeight: 380,
+              minHeight: "95vh",
             }}
           >
             {children}
