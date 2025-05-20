@@ -1,0 +1,40 @@
+import { NextApiRequest, NextApiResponse } from "next";
+import { LeaveBalanceAppController } from "./leaveBalance.app.controller";
+import { LeaveBalanceService } from "./leaveBalance.service";
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const leaveBalanceService = new LeaveBalanceService();
+  const leaveBalanceAppController = new LeaveBalanceAppController(leaveBalanceService);
+
+  switch (req.method) {
+    case "GET":
+      if (req.query.userId) {
+        return await leaveBalanceAppController.findByUserId(req, res);
+      }
+      if (req.query.id) {
+        if (req.query.availableDays) {
+          return await leaveBalanceAppController.getAvailableDays(req, res);
+        }
+        return await leaveBalanceAppController.findOne(req, res);
+      }
+      return await leaveBalanceAppController.findAll(req, res);
+
+    case "POST":
+      return await leaveBalanceAppController.create(req, res);
+
+    case "PUT":
+      if (req.query.id) {
+        if (req.query.usedDays) {
+          return await leaveBalanceAppController.updateUsedDays(req, res);
+        }
+        return await leaveBalanceAppController.update(req, res);
+      }
+      return res.status(400).json({ message: "ID is required" });
+
+    default:
+      return res.status(405).json({ message: "Method not allowed" });
+  }
+}

@@ -125,6 +125,9 @@ model users {
   employment_statuses                                     employment_statuses  @relation(fields: [current_employment_status_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users                                                   users?               @relation("usersTousers", fields: [manager_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   other_users                                             users[]              @relation("usersTousers")
+  leave_balances_leave_balances_user_idTousers             leave_balances[]     @relation("leave_balances_user_idTousers")
+  leave_balances_leave_balances_created_byTousers           leave_balances[]     @relation("leave_balances_created_byTousers")
+  leave_balances_leave_balances_updated_byTousers           leave_balances[]     @relation("leave_balances_updated_byTousers")
 
   @@index([current_area_id], map: "idx_users_current_area_id")
   @@index([current_designation_id], map: "idx_users_current_designation_id")
@@ -242,6 +245,66 @@ model master_data {
 
   @@unique([entity_type, code], map: "idx_master_data_entity_type_code")
   @@index([entity_type], map: "idx_master_data_entity_type")
+}
+
+model fiscal_years {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique @db.VarChar(100)
+  start_date  DateTime @db.Date
+  end_date    DateTime @db.Date
+  description String?  @db.Text
+  is_active   Boolean  @default(false)
+  created_by  Int?
+  created_on  DateTime @default(now()) @db.Timestamptz(6)
+  updated_by  Int?
+  updated_on  DateTime? @db.Timestamptz(6)
+  leave_balances leave_balances[]
+
+  @@index([name], map: "idx_fiscal_years_name")
+  @@index([start_date], map: "idx_fiscal_years_start_date")
+  @@index([end_date], map: "idx_fiscal_years_end_date")
+}
+
+model leave_types {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique @db.VarChar(100)
+  code        String   @unique @db.VarChar(50)
+  description String?  @db.Text
+  days        Decimal  @default(0) @db.Decimal(5, 2)
+  carry_over_days Decimal @default(0) @db.Decimal(5, 2)
+  is_active   Boolean  @default(false)
+  created_by  Int?
+  created_on  DateTime @default(now()) @db.Timestamptz(6)
+  updated_by  Int?
+  updated_on  DateTime? @db.Timestamptz(6)
+  leave_balances leave_balances[]
+
+  @@index([name], map: "idx_leave_types_name")
+  @@index([code], map: "idx_leave_types_code")
+}
+
+model leave_balances {
+  id            Int         @id @default(autoincrement())
+  user_id       Int
+  leave_type_id Int
+  fiscal_year_id Int
+  total_days    Decimal     @db.Decimal(5, 2)
+  used_days     Decimal     @default(0) @db.Decimal(5, 2)
+  is_active     Boolean     @default(false)
+  created_by    Int?
+  created_on    DateTime    @default(now()) @db.Timestamptz(6)
+  updated_by    Int?
+  updated_on    DateTime?   @db.Timestamptz(6)
+  users         users       @relation("leave_balances_user_idTousers", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leave_types   leave_types @relation(fields: [leave_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  fiscal_years  fiscal_years @relation(fields: [fiscal_year_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_leave_balances_created_byTousers users? @relation("leave_balances_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_leave_balances_updated_byTousers users? @relation("leave_balances_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([user_id, leave_type_id, fiscal_year_id], map: "idx_leave_balances_user_leave_fiscal")
+  @@index([user_id], map: "idx_leave_balances_user_id")
+  @@index([leave_type_id], map: "idx_leave_balances_leave_type_id")
+  @@index([fiscal_year_id], map: "idx_leave_balances_fiscal_year_id")
 }
 
 enum requesttype {
