@@ -262,4 +262,52 @@ export class LeaveService {
       );
     }
   }
+
+  async findByManagerId(managerId: number): Promise<leaves[]> {
+    try {
+      return await this.prismaClient.leaves.findMany({
+        where: {
+          manager_id: managerId,
+        },
+        orderBy: { applied_at: "desc" },
+        include: {
+          users: true,
+          leave_types: true,
+          fiscal_years: true,
+          users_leaves_approved_byTousers: true,
+          users_leaves_manager_idTousers: true,
+          leave_transactions: {
+            orderBy: { created_at: "desc" },
+          },
+        },
+      });
+    } catch (error) {
+      logger.error(`Error finding leaves for manager ${managerId}:`, error);
+      throw new HttpException(500, "Failed to retrieve leaves.");
+    }
+  }
+
+  async findByUserId(userId: number): Promise<leaves[]> {
+    try {
+      return await this.prismaClient.leaves.findMany({
+        where: {
+          user_id: userId,
+        },
+        orderBy: { applied_at: "desc" },
+        include: {
+          users: true,
+          leave_types: true,
+          fiscal_years: true,
+          users_leaves_approved_byTousers: true,
+          users_leaves_manager_idTousers: true,
+          leave_transactions: {
+            orderBy: { created_at: "desc" },
+          },
+        },
+      });
+    } catch (error) {
+      logger.error(`Error finding leaves for user ${userId}:`, error);
+      throw new HttpException(500, "Failed to retrieve leaves.");
+    }
+  }
 }
