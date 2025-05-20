@@ -307,6 +307,53 @@ model leave_balances {
   @@index([fiscal_year_id], map: "idx_leave_balances_fiscal_year_id")
 }
 
+model leaves {
+  id            Int         @id @default(autoincrement())
+  user_id       Int
+  leave_type_id Int
+  fiscal_year_id Int
+  start_date    DateTime    @db.Date
+  end_date      DateTime    @db.Date
+  duration_days Decimal     @db.Decimal(5, 2)
+  reason        String?     @db.Text
+  status        String      @default("pending") @db.VarChar(20)
+  applied_at    DateTime    @default(now()) @db.Timestamptz(6)
+  approved_by   Int?
+  approved_at   DateTime?   @db.Timestamptz(6)
+  notes         String?     @db.Text
+  manager_id    Int?
+  created_by    Int?
+  created_on    DateTime    @default(now()) @db.Timestamptz(6)
+  updated_by    Int?
+  updated_on    DateTime?   @db.Timestamptz(6)
+  users         users       @relation("leaves_user_idTousers", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leave_types   leave_types @relation(fields: [leave_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  fiscal_years  fiscal_years @relation(fields: [fiscal_year_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_leaves_approved_byTousers users? @relation("leaves_approved_byTousers", fields: [approved_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_leaves_manager_idTousers users? @relation("leaves_manager_idTousers", fields: [manager_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_leaves_created_byTousers users? @relation("leaves_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_leaves_updated_byTousers users? @relation("leaves_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([user_id], map: "idx_leaves_user_id")
+  @@index([leave_type_id], map: "idx_leaves_leave_type_id")
+  @@index([fiscal_year_id], map: "idx_leaves_fiscal_year_id")
+  @@index([status], map: "idx_leaves_status")
+  @@index([approved_by], map: "idx_leaves_approved_by")
+  @@index([manager_id], map: "idx_leaves_manager_id")
+}
+
+model leave_transactions {
+  id         Int      @id @default(autoincrement())
+  leave_id   Int
+  type       String   @default("request") @db.VarChar(20)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  notes      String?  @db.Text
+  leaves     leaves   @relation(fields: [leave_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([leave_id], map: "idx_leave_transactions_leave_id")
+  @@index([type], map: "idx_leave_transactions_type")
+}
+
 enum requesttype {
   CREATE
   UPDATE
