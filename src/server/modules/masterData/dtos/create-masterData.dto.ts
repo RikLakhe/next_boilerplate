@@ -12,7 +12,7 @@ export class CreateMasterDataDto {
 
   @IsString()
   @IsOptional()
-  entity_type!: string;
+  entityType!: string;
 
   @IsString()
   @IsOptional()

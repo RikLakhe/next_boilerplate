@@ -1,45 +1,39 @@
 import axiosConfig from "@/app/config/axiosConfig";
-import { MasterDataProps } from "@/types/masterData";
+import { MasterData } from "@prisma/client";
+
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchMasterData = createAsyncThunk(
   "fetch/masterData",
-  async () => {
-    const resp = await axiosConfig.get<MasterDataProps[]>("/master-data");
+  async (entity: string = "") => {
+    const resp = await axiosConfig.get<MasterData[]>(`/master-data/${entity}`);
     return resp.data;
   },
 );
 
 export const storeMasterData = createAsyncThunk(
   "store/masterData",
-  async (data: MasterDataProps, { rejectWithValue }) => {
+  async (data: MasterData) => {
     try {
-      const resp = await axiosConfig.post<MasterDataProps>(
-        "/master-data",
-        data,
-      );
+      const resp = await axiosConfig.post<MasterData>("/master-data", data);
       return resp.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to create master data",
-      );
+      throw new Error(error.response?.data?.message);
     }
   },
 );
 
 export const updateMasterData = createAsyncThunk(
   "update/masterData",
-  async (data: MasterDataProps, { rejectWithValue }) => {
+  async (data: MasterData) => {
     try {
-      const resp = await axiosConfig.put<MasterDataProps>(
+      const resp = await axiosConfig.put<MasterData>(
         `/master-data/${data.id}`,
         data,
       );
       return resp.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to update master data",
-      );
+      throw new Error(error.response?.data?.message);
     }
   },
 );

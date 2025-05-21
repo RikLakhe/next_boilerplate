@@ -39,5 +39,6 @@
   "prisma.validate.enable": true,
   "git.enableSmartCommit": true,
   "git.confirmSync": false,
-  "git.autofetch": true
+  "git.autofetch": true,
+  "postman.settings.dotenv-detection-notification-visibility": false
 }

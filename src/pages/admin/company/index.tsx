@@ -41,18 +41,6 @@ const fakeCompanyData = {
         "We conduct our business with the highest standards of integrity and transparency.",
     },
   ],
-  fiscalYears: [
-    {
-      startDate: dayjs("2024-01-01"),
-      endDate: dayjs("2024-12-31"),
-      isActive: true,
-    },
-    {
-      startDate: dayjs("2023-01-01"),
-      endDate: dayjs("2023-12-31"),
-      isActive: false,
-    },
-  ],
   workingWeek: {
     monday: {
       isActive: true,
@@ -138,37 +126,6 @@ const CompanyGeneralPage: LayoutPageProps = () => {
       };
     },
   );
-
-  const fiscalYearColumns = [
-    {
-      title: "Start Date",
-      dataIndex: "startDate",
-      key: "startDate",
-      render: (date: dayjs.Dayjs) => {
-        return date.format("MMMM D, YYYY");
-      },
-    },
-    {
-      title: "End Date",
-      dataIndex: "endDate",
-      key: "endDate",
-      render: (date: dayjs.Dayjs) => {
-        return date.format("MMMM D, YYYY");
-      },
-    },
-    {
-      title: "Status",
-      dataIndex: "isActive",
-      key: "isActive",
-      render: (isActive: boolean) => {
-        return (
-          <Tag color={isActive ? "green" : "default"}>
-            {isActive ? "Active" : "Inactive"}
-          </Tag>
-        );
-      },
-    },
-  ];
 
   return (
     <div>
@@ -270,17 +227,6 @@ const CompanyGeneralPage: LayoutPageProps = () => {
               <Table
                 columns={workingWeekColumns}
                 dataSource={workingWeekData}
-                pagination={false}
-                size="middle"
-              />
-            </Card>
-          </Col>
-
-          <Col span={24}>
-            <Card title="Fiscal Years">
-              <Table
-                columns={fiscalYearColumns}
-                dataSource={fakeCompanyData.fiscalYears}
                 pagination={false}
                 size="middle"
               />

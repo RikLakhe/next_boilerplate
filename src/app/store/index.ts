@@ -1,9 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import masterDataReducer from "./features/masterData/masterData.slice";
-// import other reducers...
+import eventsReducer from "./features/events/events.slice";
+import fiscalYearReducer from "./features/fiscalYear/fiscal.slice";
 
 const rootReducer = combineReducers({
   masterData: masterDataReducer,
+  events: eventsReducer,
+  fiscalYear: fiscalYearReducer,
 });
 
 export const makeStore = () => {

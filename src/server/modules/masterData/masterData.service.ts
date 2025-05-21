@@ -1,6 +1,5 @@
-import { master_data as MasterData, Prisma } from "@prisma/client";
+import { MasterData, Prisma } from "@prisma/client";
 
-import { MasterDataProps } from "@/types/masterData";
 import { prisma } from "@/server/common/prisma/client"; // Import the singleton instance
 import { HttpException } from "@/server/common/exceptions/http-exception";
 import logger from "@/server/common/utils/logger.util";
@@ -12,8 +11,8 @@ export class MasterDataService {
 
   async findAll(entityType?: string): Promise<MasterData[]> {
     try {
-      return await this.prismaClient.master_data.findMany({
-        where: entityType ? { entity_type: entityType } : undefined,
+      return await this.prismaClient.masterData.findMany({
+        where: entityType ? { entityType } : undefined,
       });
     } catch (error) {
       logger.error("Error finding all master data:", error);
@@ -23,7 +22,7 @@ export class MasterDataService {
 
   async findOne(id: number): Promise<MasterData | null> {
     try {
-      const masterData = await this.prismaClient.master_data.findUnique({
+      const masterData = await this.prismaClient.masterData.findUnique({
         where: { id },
       });
       if (!masterData) {
@@ -41,11 +40,9 @@ export class MasterDataService {
     }
   }
 
-  async create(
-    createMasterDataDto: CreateMasterDataDto,
-  ): Promise<MasterDataProps> {
+  async create(createMasterDataDto: CreateMasterDataDto): Promise<MasterData> {
     try {
-      const newMasterData = await this.prismaClient.master_data.create({
+      const newMasterData = await this.prismaClient.masterData.create({
         data: createMasterDataDto,
       });
 
@@ -71,17 +68,23 @@ export class MasterDataService {
   async update(
     id: number,
     updateMasterDataDto: UpdateMasterDataDto,
-  ): Promise<MasterDataProps> {
+  ): Promise<{
+    masterData: MasterData;
+    oldValue: MasterData | null;
+  }> {
     try {
-      // First check if area exists
-      await this.findOne(id);
-
-      return await this.prismaClient.master_data.update({
+      const oldValue = await this.findOne(id);
+      const newValue = await this.prismaClient.masterData.update({
         where: { id },
         data: updateMasterDataDto,
       });
+
+      return {
+        masterData: newValue,
+        oldValue,
+      };
     } catch (error) {
-      if (error instanceof HttpException) throw error; // Re-throw known HTTP/not found errors
+      if (error instanceof HttpException) throw error;
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === "P2002") {
           // Handle potential unique constraint violation on update
@@ -94,7 +97,6 @@ export class MasterDataService {
           );
         }
         if (error.code === "P2025") {
-          // Record to update not found (already handled by findOne, but good practice)
           logger.warn(
             `Not Found: Master Data with ID ${id} not found for update.`,
           );

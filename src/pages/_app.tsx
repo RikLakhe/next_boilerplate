@@ -6,6 +6,9 @@ import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { NextPage } from "next";
 import { SessionProvider } from "next-auth/react";
 import { useRouter } from "next/router";
+import Head from "next/head";
+import "antd/dist/reset.css";
+
 import { AppStore } from "@/app/store";
 
 const { darkAlgorithm } = theme;
@@ -56,39 +59,44 @@ const App = ({
     });
 
   return (
-    <SessionProvider session={session}>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: "#7c3aed",
-            wireframe: false,
-          },
-          algorithm: darkAlgorithm,
-        }}
-      >
-        {loading && (
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100vw",
-              height: "100vh",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "rgba(255,255,255,0.2)",
-              zIndex: 9999,
-            }}
-          >
-            <Spin size="large" />
-          </div>
-        )}
-        <Provider store={AppStore}>
-          {getLayout(<Component {...pageProps} />)}
-        </Provider>
-      </ConfigProvider>
-    </SessionProvider>
+    <>
+      <Head>
+        <title>Aricalot HRIS</title>
+      </Head>
+      <SessionProvider session={session}>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#7c3aed",
+              wireframe: false,
+            },
+            algorithm: darkAlgorithm,
+          }}
+        >
+          {loading && (
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "rgba(255,255,255,0.2)",
+                zIndex: 9999,
+              }}
+            >
+              <Spin size="large" />
+            </div>
+          )}
+          <Provider store={AppStore}>
+            {getLayout(<Component {...pageProps} />)}
+          </Provider>
+        </ConfigProvider>
+      </SessionProvider>
+    </>
   );
 };
 

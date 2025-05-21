@@ -1,122 +1,73 @@
-import { AreasService } from "@/server/modules/areas/area.service";
 import { Button, Alert, Modal, Input, Flex, Table } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useEffect, useRef, useState } from "react";
-import { IncomingMessage } from "http";
+import { useRef, useState } from "react";
 import MainLayout from "@/app/components/layout/MainLayout";
 import TitleBanner from "@/app/components/shared/TitleBanner";
+import { GetServerSideProps } from "next";
 
-export async function getServerSideProps({ req }: { req: IncomingMessage }) {
-  let formError: string | null = null;
-  let formSuccess: string | null = null;
-  // Fetch ALL data needed for the page on the server
-  const areasService = new AreasService();
+// eslint-disable-next-line react-refresh/only-export-components
 
-  if (req.method === "POST") {
-    // Parse form data
-    const body = await new Promise<string>((resolve, reject) => {
-      let data = "";
-      req.on("data", (chunk) => {
-        data += chunk;
-      });
-      req.on("end", () => {
-        resolve(data);
-      });
-      req.on("error", reject);
-    });
+// eslint-disable-next-line import/no-extraneous-dependencies
+import cookie from "cookie";
 
-    const formData = new URLSearchParams(body);
-    const action = formData.get("action");
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req } = context;
 
-    // Handle create operation
-    // Handle create operation
-    if (action === "create") {
-      const name = formData.get("areaName");
-      const description = formData.get("areaDescription");
-      try {
-        await areasService.create({
-          name: name || "",
-          description: description || "",
-        });
+  const cookies = cookie.parse(req.headers.cookie || "");
 
-        formSuccess = "Item updated successfully!";
-      } catch (error) {
-        formError =
-          error instanceof Error ? error.message : "An unknown error occurred";
-      }
-    }
+  const sessionToken = cookies["next-auth.session-token"];
+  const csrfToken = cookies["next-auth.csrf-token"];
 
-    // Handle delete operation
-    if (action === "delete") {
-      const id = formData.get("deleteId");
-      try {
-        if (id) {
-          await areasService.remove(parseInt(id, 10));
-        } else {
-          throw new Error("Invalid ID: ID cannot be null");
-        }
-        formSuccess = "Item deleted successfully!";
-      } catch (error) {
-        formError =
-          error instanceof Error ? error.message : "An unknown error occurred";
-      }
-    }
+  const headers = {
+    "Content-Type": "application/json",
+    Cookie: `next-auth.session-token=${sessionToken}; next-auth.csrf-token=${csrfToken}`,
+  };
+
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/designation`, {
+    method: "GET",
+    headers,
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch designations");
   }
 
-  try {
-    const areas = await areasService.findAll();
+  const data = await res.json();
 
-    return {
-      props: {
-        initialArea: JSON.parse(JSON.stringify(areas)),
-        formError,
-        formSuccess,
-      },
-    };
-  } catch (error) {
-    return {
-      props: {
-        initialArea: [],
-        initialAreaError:
-          error instanceof Error ? error.message : "An unknown error occurred",
-        formError,
-        formSuccess,
-      },
-    };
-  }
-}
+  return {
+    props: {
+      designations: data,
+    },
+  };
+};
 
-interface Area {
+interface Designation {
   id: string;
-  name: string;
+  title: string;
   description: string;
 }
 
 const Designations = ({
-  initialArea,
-  initialAreaError,
-  formError = "",
+  designations,
+  initialError,
 }: {
-  initialArea: Area[];
-  initialAreaError: string;
-  formError: string;
+  designations: Designation[];
+  initialError: string;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [areaName, setAreaName] = useState<string | undefined>(undefined);
+  const [designationName, setDesignationName] = useState<string | undefined>(
+    undefined,
+  );
   const [areaDescription, setAreaDescription] = useState<string | undefined>(
     undefined,
   );
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(formError || "");
+  // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/no-unused-vars
+  const [_, setError] = useState("");
 
   // Hidden form reference for direct form submission
   const hiddenFormRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    if (formError) {
-      setIsModalOpen(true);
-    }
-  }, [formError]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -126,7 +77,7 @@ const Designations = ({
     event.preventDefault();
 
     // Client-side validation
-    if (!areaName || !areaName.trim()) {
+    if (!designationName || !designationName.trim()) {
       setError("Name is required");
       return;
     }
@@ -146,7 +97,7 @@ const Designations = ({
             actionInput.value = "create";
           }
         }
-        form.areaName.value = areaName;
+        form.designationName.value = designationName;
         form.areaDescription.value = areaDescription;
         // Submit the form directly
         form.submit();
@@ -178,23 +129,23 @@ const Designations = ({
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    setAreaName(undefined);
+    setDesignationName(undefined);
     setAreaDescription(undefined);
     setError("");
     setLoading(false);
     if (hiddenFormRef.current) {
       const form = hiddenFormRef.current;
       form.action = "";
-      form.areaName.value = "";
+      form.designationName.value = "";
       form.areaDescription.value = "";
     }
   };
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
     },
     {
       title: "Description",
@@ -204,7 +155,7 @@ const Designations = ({
     {
       title: "Action",
       key: "action",
-      render: (_: unknown, record: Area) => {
+      render: (_: unknown, record: Designation) => {
         return (
           <Button
             type="primary"
@@ -225,7 +176,7 @@ const Designations = ({
       <TitleBanner
         title="Desinations"
         buttons={
-          !initialAreaError && (
+          !initialError && (
             <Button
               type="primary"
               shape="round"
@@ -238,33 +189,33 @@ const Designations = ({
         }
       />
 
-      {initialAreaError && (
-        <Alert message={initialAreaError} type="error" closable />
-      )}
+      {initialError && <Alert message={initialError} type="error" closable />}
 
-      <Table<Area> columns={columns} dataSource={initialArea} />
+      <Table<Designation> columns={columns} dataSource={designations} />
 
-      {!initialAreaError && (
+      {!initialError && (
         <Modal
           title="Create New Area"
           open={isModalOpen}
           footer={null}
           onCancel={handleCancel}
         >
-          {error && <Alert type="error" message={error} showIcon closable />}
+          {initialError && (
+            <Alert type="error" message={initialError} showIcon closable />
+          )}
 
           <form onSubmit={handleSubmit}>
             <Flex vertical gap={16}>
               <div>
                 <p>Area Name</p>
                 <Input
-                  name="areaName"
+                  name="designationName"
                   size="large"
                   placeholder="Enter name of the area"
                   onChange={(e) => {
-                    setAreaName(e.target.value);
+                    setDesignationName(e.target.value);
                   }}
-                  value={areaName}
+                  value={designationName}
                 />
               </div>
               <div>
@@ -299,7 +250,7 @@ const Designations = ({
         style={{ display: "none" }}
       >
         <input type="hidden" name="action" value="" />
-        <input type="hidden" name="areaName" value="" />
+        <input type="hidden" name="designationName" value="" />
         <input type="hidden" name="areaDescription" value="" />
         <input type="hidden" name="deleteId" value="" />
         <input type="hidden" name="itemId" value="" />
