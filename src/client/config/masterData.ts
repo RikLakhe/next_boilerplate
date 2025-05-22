@@ -5,11 +5,6 @@ export const MASTER_DATA_DROPDOWN = [
     color: false,
   },
   {
-    key: "values_category",
-    label: "Values Categories",
-    color: false,
-  },
-  {
     key: "event",
     label: "Events",
     color: true,
@@ -28,5 +23,10 @@ export const MASTER_DATA_DROPDOWN = [
     key: "urgency",
     label: "Urgency",
     color: true,
+  },
+  {
+    key: "values_category",
+    label: "Values Categories",
+    color: false,
   },
 ];

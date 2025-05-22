@@ -1,22 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  ColorPicker,
-  Drawer,
-  Form,
-  Input,
-  Layout,
-  Menu,
-  Row,
-  Select,
-  Space,
-  Switch,
-  Table,
-  theme,
-  Alert,
-  notification,
-} from "antd";
+import { Button, Layout, Menu, Switch, Table, theme, Alert } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content } from "antd/es/layout/layout";
 
@@ -30,15 +13,10 @@ import { MasterDataAppController } from "@/server/modules/masterData/masterData.
 import { MASTER_DATA_DROPDOWN } from "@/client/config/masterData";
 import { useMasterData } from "@/client/hooks/useMasterData";
 import { useAppDispatch } from "@/client/hooks/useAppDispatch";
-import {
-  fetchMasterData,
-  storeMasterData,
-  updateMasterData,
-} from "@/client/store/features/masterData/masterDataAPI.service";
+import { fetchMasterData } from "@/client/store/features/masterData/masterDataAPI.service";
 import { setMasterData } from "@/client/store/features/masterData/masterData.slice";
 import { MasterData } from "@prisma/client";
-
-const { Option } = Select;
+import AdminSettingsDrawer from "@/client/components/AdminSettingsDrawer";
 
 export async function getServerSideProps() {
   const masterDataAppController = new MasterDataAppController();
@@ -68,14 +46,11 @@ const AdminSettingsPage: LayoutPageProps = ({
   initialMasterDataError: string;
 }) => {
   const dispatch = useAppDispatch();
-  const { masterData, loading, error } = useMasterData();
-  const [form] = Form.useForm();
+  const { masterData } = useMasterData();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const [formError, setFormError] = useState<string | undefined>(undefined);
-  const [entityType, setEntityType] = useState<string | undefined>(undefined);
   const [selectedKey, setSelectedKey] = useState<string>(
     MASTER_DATA_MENU_CONFIG[0].key,
   );
@@ -93,9 +68,7 @@ const AdminSettingsPage: LayoutPageProps = ({
 
   const onClose = () => {
     setSelectedRecord(undefined);
-    form.resetFields();
     setOpen(false);
-    setFormError(undefined);
   };
 
   const renderMenuItems = (items: MasterDataMenuInterface[]) => {
@@ -205,24 +178,6 @@ const AdminSettingsPage: LayoutPageProps = ({
     },
   ];
 
-  // Reset form fields when selectedRecord changes
-  useEffect(() => {
-    if (selectedRecord) {
-      form.setFieldsValue({
-        entityType: selectedRecord.entityType,
-        code: selectedRecord.code,
-        label: selectedRecord.label,
-        color: selectedRecord.color,
-        isActive: selectedRecord.isActive,
-      });
-
-      setEntityType(selectedRecord.entityType);
-    } else {
-      form.resetFields();
-      setEntityType(undefined);
-    }
-  }, [selectedRecord, form]);
-
   useEffect(() => {
     if (initialMasterData && initialMasterData.length > 0) {
       dispatch(setMasterData(initialMasterData));
@@ -281,160 +236,11 @@ const AdminSettingsPage: LayoutPageProps = ({
         </Content>
       </Layout>
 
-      <Drawer
-        title={selectedRecord ? "Update Master Data" : "Add New Master Data"}
-        width={520}
-        onClose={onClose}
+      <AdminSettingsDrawer
+        selectedRecord={selectedRecord}
         open={open}
-        styles={{
-          body: {
-            paddingBottom: 80,
-          },
-        }}
-        extra={
-          <Space>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button
-              onClick={() => {
-                form.submit();
-              }}
-              type="primary"
-              loading={loading}
-            >
-              Submit
-            </Button>
-          </Space>
-        }
-      >
-        {(error || formError) && (
-          <Alert message={error || formError} type="error" closable closeIcon />
-        )}
-        <Form
-          form={form}
-          layout="vertical"
-          onValuesChange={(changedValues) => {
-            if (changedValues.entityType) {
-              setEntityType(changedValues.entityType);
-            }
-          }}
-          onFinish={async (values) => {
-            const formData = {
-              ...values,
-              color:
-                typeof values.color === "string"
-                  ? values.color
-                  : values.color?.toHexString(),
-            };
-
-            if (selectedRecord) {
-              formData.id = selectedRecord.id;
-              try {
-                await dispatch(updateMasterData(formData)).unwrap();
-                notification.success({
-                  message: "Master Data update successful.",
-                  placement: "topRight",
-                });
-                onClose();
-              } catch (err) {
-                setFormError(err.message);
-              }
-            } else {
-              try {
-                await dispatch(storeMasterData(formData)).unwrap();
-                notification.success({
-                  message: "Master Data create successful.",
-                  placement: "topRight",
-                });
-                onClose();
-              } catch (err) {
-                setFormError(err.message);
-              }
-            }
-          }}
-        >
-          <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item
-                name="entityType"
-                label="Entity"
-                rules={[
-                  { required: true, message: "Please choose the entity" },
-                ]}
-              >
-                <Select placeholder="Please choose the entity">
-                  {MASTER_DATA_DROPDOWN.map((item) => {
-                    return (
-                      <Option value={item.key} key={item.key}>
-                        {item.label}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item
-                name="code"
-                label="Code"
-                rules={[{ required: true, message: "Please enter code" }]}
-              >
-                <Input placeholder="Please enter code" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item
-                name="label"
-                label="Label"
-                rules={[{ required: true, message: "Please enter label" }]}
-              >
-                <Input placeholder="Please enter label" />
-              </Form.Item>
-            </Col>
-          </Row>
-          {entityType &&
-            MASTER_DATA_DROPDOWN.filter((item) => {
-              return item.color;
-            })
-              .map((item) => {
-                return item.key;
-              })
-              .includes(entityType) && (
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    name="color"
-                    label="Color"
-                    rules={[{ required: true, message: "Please select color" }]}
-                  >
-                    <ColorPicker
-                      defaultValue="#ffff"
-                      format="hex"
-                      showText={(color) => {
-                        return <span>({color.toHexString()})</span>;
-                      }}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-            )}
-          {selectedRecord && (
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item name="isActive" label="Is Active">
-                  <Switch
-                    checkedChildren="Enabled"
-                    unCheckedChildren="Disabled"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-          )}
-        </Form>
-      </Drawer>
+        onClose={onClose}
+      />
     </>
   );
 };

@@ -75,6 +75,17 @@ export class UsersService {
     }
   }
 
+  async findByEmail(email: string): Promise<User | null> {
+    try {
+      return await this.prismaClient.user.findUnique({
+        where: { email },
+      });
+    } catch (error) {
+      logger.error("Error finding all users:", error);
+      throw new HttpException(500, "Failed to retrieve users.");
+    }
+  }
+
   async findOne(id: number): Promise<User> {
     try {
       const user = await this.prismaClient.user.findUnique({

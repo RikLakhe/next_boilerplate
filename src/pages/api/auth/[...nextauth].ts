@@ -1,29 +1,49 @@
+import { UsersService } from "@/server/modules/users/user.service";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // Here we're hardcoding a simple check for username/password
-        // In a real app, you would validate against a database
-        if (
-          credentials?.username === "admin" &&
-          credentials?.password === "admin"
-        ) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Missing Email or Password.");
+        }
+
+        const usersService = new UsersService();
+
+        const result = await usersService.findByEmail(credentials.email);
+        if (!result) {
+          throw new Error("Invalid Email or Password.");
+        }
+        if (result.currentEmploymentStatusId === 4) {
+          throw new Error(
+            "Your Account has been deactivated. Please contact admin team.",
+          );
+        }
+
+        const isPasswordCorrect = bcrypt.compareSync(
+          credentials.password,
+          result.passwordHash,
+        );
+
+        if (isPasswordCorrect) {
+          // Only return the fields required by NextAuth, and ensure id is a string
           return {
-            id: "1",
-            name: "Administrator",
-            email: "admin@example.com",
+            id: result.id.toString(),
+            name: result.fullName,
+            email: result.email,
+            mangerId: result.managerId,
           };
         }
 
-        throw new Error("Invalid username or password.");
+        throw new Error("Invalid Email or Password.");
       },
     }),
   ],
@@ -38,13 +58,13 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.id = Number(user.id);
       }
       return token;
     },
     async session({ session, token }) {
       if (session?.user) {
-        session.user.id = token.id as string;
+        session.user.id = token.id;
       }
       return session;
     },

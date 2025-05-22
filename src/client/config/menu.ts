@@ -188,9 +188,9 @@ export const ADMIN_MENU_CONFIG = [
         path: "/admin/company/fiscal",
       },
       {
-        key: "admin-leaves",
+        key: "admin-leave",
         label: "Leaves",
-        path: "/admin/company/leaves",
+        path: "/admin/company/leave",
       },
     ],
   },
@@ -233,10 +233,6 @@ export const MASTER_DATA_MENU_CONFIG = [
     label: "Timezones",
   },
   {
-    key: "values_category",
-    label: "Values Categories",
-  },
-  {
     key: "calendar",
     label: "Calendar",
     subMenu: [
@@ -255,6 +251,16 @@ export const MASTER_DATA_MENU_CONFIG = [
       {
         key: "urgency",
         label: "Urgency",
+      },
+    ],
+  },
+  {
+    key: "company",
+    label: "Company",
+    subMenu: [
+      {
+        key: "values_category",
+        label: "Values Categories",
       },
     ],
   },

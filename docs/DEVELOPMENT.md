@@ -3,6 +3,7 @@
 This guide provides detailed information for developers working on the Next.js Employee Management System.
 
 ## Table of Contents
+
 - [Development Environment Setup](#development-environment-setup)
 - [Docker Setup](#docker-setup)
 - [Code Organization](#code-organization)
@@ -14,6 +15,7 @@ This guide provides detailed information for developers working on the Next.js E
 ## Development Environment Setup
 
 ### Required Tools
+
 - Node.js 18+ and npm
 - PostgreSQL 14+
 - Git
@@ -21,7 +23,9 @@ This guide provides detailed information for developers working on the Next.js E
 - Docker (optional)
 
 ### VS Code Extensions
+
 Install these recommended extensions:
+
 - ESLint
 - Prettier
 - Prisma
@@ -33,6 +37,7 @@ Install these recommended extensions:
 ### Initial Setup
 
 1. **Clone and Install**
+
 ```bash
 git clone <repository-url>
 cd next_boilerplate
@@ -40,16 +45,20 @@ npm install
 ```
 
 2. **Environment Configuration**
+
 ```bash
 cp .env.example .env.local
 ```
+
 Configure the following in `.env.local`:
+
 - Database connection string
 - NextAuth.js secrets
 - API keys (if needed)
 - Environment-specific settings
 
 3. **Database Setup**
+
 ```bash
 # Create database
 createdb next_boilerplate
@@ -62,6 +71,7 @@ npm run prisma:seed
 ```
 
 4. **Start Development Server**
+
 ```bash
 npm run dev
 ```
@@ -69,12 +79,14 @@ npm run dev
 ## Docker Setup
 
 ### Prerequisites
+
 - Docker
 - Docker Compose
 
 ### Running with Docker
 
 1. **Build and Start Services**
+
 ```bash
 # Build and start all services
 docker-compose up --build
@@ -84,6 +96,7 @@ docker-compose up -d
 ```
 
 2. **Database Migrations**
+
 ```bash
 # Run migrations
 docker-compose exec app npm run prisma:migrate
@@ -92,7 +105,13 @@ docker-compose exec app npm run prisma:migrate
 docker-compose exec app npm run prisma:seed
 ```
 
+Note: The seed script will create an admin user:
+
+Email: admin@yopmail.com
+Password: TEST@123
+
 3. **Useful Docker Commands**
+
 ```bash
 # View logs
 docker-compose logs -f
@@ -111,12 +130,14 @@ docker-compose exec db psql -U postgres -d next_boilerplate
 ```
 
 4. **Development with Docker**
+
 - The application will be available at http://localhost:3000
 - PostgreSQL will be available at localhost:5432
 - Hot reloading is enabled for development
 - Database data persists in a Docker volume
 
 5. **Troubleshooting Docker**
+
 ```bash
 # Check container status
 docker-compose ps
@@ -135,9 +156,10 @@ docker system prune
 ## Code Organization
 
 ### Directory Structure
+
 ```
 src/
-├── app/                    # Next.js 13+ app directory
+├── client/                    # frontend directory
 │   ├── components/            # Reusable components
 │   │   ├── common/           # Shared components
 │   │   ├── forms/            # Form components
@@ -149,12 +171,13 @@ src/
 │   ├── styles/               # Global styles
 ├── pages/                # Next.js pages
 │   └── api/             # API routes
-├── server/               # Server-side code
+├── server/               # Server directory
 ├── types/                # TypeScript types
 └── middleware.ts         # Next.js middleware
 ```
 
 ### Key Files
+
 - `src/types/` - TypeScript interfaces and types
 - `src/lib/` - Utility functions and helpers
 - `src/components/` - Reusable React components
@@ -166,6 +189,7 @@ src/
 ### 1. Starting a New Feature
 
 1. Create a new branch:
+
 ```bash
 git checkout -b feature/your-feature-name
 ```
@@ -182,9 +206,11 @@ git checkout -b feature/your-feature-name
 
 1. Modify `prisma/schema.prisma`
 2. Create migration:
+
 ```bash
 npm run prisma:migrate
 ```
+
 3. Test migration locally
 4. Update seed data if needed
 
@@ -200,6 +226,7 @@ npm run prisma:migrate
 
 1. Create components in appropriate directories
 2. Follow component structure:
+
 ```typescript
 // Component structure
 import { FC } from 'react';
@@ -224,12 +251,14 @@ export const Component: FC<Props> = ({ /* props */ }) => {
 ## Testing
 
 ### 1. Manual Testing
+
 - Test all user flows
 - Verify responsive design
 - Check error handling
 - Test form validations
 
 ### 2. Automated Testing
+
 ```bash
 # Run tests
 npm test
@@ -239,6 +268,7 @@ npm test:watch
 ```
 
 ### 3. Testing Checklist
+
 - [ ] Unit tests for utilities
 - [ ] Component tests
 - [ ] API endpoint tests
@@ -248,17 +278,20 @@ npm test:watch
 ## Deployment
 
 ### 1. Production Build
+
 ```bash
 npm run build
 ```
 
 ### 2. Environment Setup
+
 - Set production environment variables
 - Configure database
 - Set up SSL certificates
 - Configure domain
 
 ### 3. Deployment Checklist
+
 - [ ] Run all tests
 - [ ] Check build output
 - [ ] Verify environment variables
@@ -270,6 +303,7 @@ npm run build
 ### Common Issues
 
 1. **Database Connection**
+
 ```bash
 # Check PostgreSQL status
 pg_ctl status
@@ -279,6 +313,7 @@ echo $DATABASE_URL
 ```
 
 2. **Build Errors**
+
 ```bash
 # Clear Next.js cache
 rm -rf .next
@@ -289,6 +324,7 @@ npm install
 ```
 
 3. **TypeScript Errors**
+
 ```bash
 # Check for type errors
 npm run type-check
@@ -300,16 +336,19 @@ npm run lint:fix
 ### Debugging
 
 1. **VS Code Debugging**
+
 - Use launch configurations in `.vscode/launch.json`
 - Set breakpoints in code
 - Use debug console
 
 2. **API Debugging**
+
 - Use browser dev tools
 - Check network requests
 - Monitor API responses
 
 3. **Database Debugging**
+
 ```bash
 # Open Prisma Studio
 npm run prisma:studio
@@ -321,24 +360,28 @@ tail -f /var/log/postgresql/postgresql-14-main.log
 ## Best Practices
 
 1. **Code Quality**
+
 - Follow TypeScript best practices
 - Use ESLint and Prettier
 - Write meaningful commit messages
 - Document complex logic
 
 2. **Performance**
+
 - Optimize images
 - Use proper caching
 - Implement lazy loading
 - Monitor bundle size
 
 3. **Security**
+
 - Follow OWASP guidelines
 - Implement proper authentication
 - Sanitize user input
 - Use environment variables
 
 4. **Accessibility**
+
 - Follow WCAG guidelines
 - Use semantic HTML
 - Implement keyboard navigation

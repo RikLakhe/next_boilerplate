@@ -12,7 +12,7 @@ const LoginForm = ({
   onFinish,
 }: {
   onForgot: () => void;
-  onFinish: (values: { username: string; password: string }) => void;
+  onFinish: (values: { email: string; password: string }) => void;
 }) => {
   return (
     <>
@@ -22,18 +22,18 @@ const LoginForm = ({
       <Text type="secondary">Please enter your details</Text>
       <Form
         name="login"
-        initialValues={{ remember: true, username: "admin", password: "admin" }}
+        initialValues={{ remember: true, username: "", password: "" }}
         onFinish={onFinish}
         autoComplete="off"
         layout="vertical"
         style={{ marginTop: 32 }}
       >
         <Form.Item
-          label="Username"
-          name="username"
-          rules={[{ required: true, message: "Please enter your username!" }]}
+          label="Email"
+          name="email"
+          rules={[{ required: true, message: "Please enter your email!" }]}
         >
-          <Input size="large" placeholder="Username" />
+          <Input size="large" placeholder="Email" />
         </Form.Item>
         <Form.Item
           label="Password"
@@ -110,10 +110,10 @@ const AuthPage: React.FC = () => {
     return router.replace("?");
   };
 
-  const onFinish = async (values: { username: string; password: string }) => {
+  const onFinish = async (values: { email: string; password: string }) => {
     await signIn("credentials", {
       redirect: true,
-      username: values.username,
+      email: values.email,
       password: values.password,
       callbackUrl: (callbackUrl as string) || "/app",
     });

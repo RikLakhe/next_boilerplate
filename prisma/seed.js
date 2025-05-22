@@ -35,30 +35,15 @@ async function main() {
 
       -- Inserting data into the 'users' table (with updated area and designation IDs)
       INSERT INTO users (full_name, email, password_hash, manager_id, current_area_id, current_designation_id, current_employment_status_id) VALUES
-      ('John Doe', 'john.doe@example.com', 'hashed_password_1', NULL, 4, 4, 3), -- PM, Senior, Permanent
-      ('Jane Smith', 'jane.smith@example.com', 'hashed_password_2', 1, 3, 3, 3), -- Development, Mid-Level, Permanent
-      ('Peter Jones', 'peter.jones@example.com', 'hashed_password_3', 1, 2, 2, 3), -- Quality Assurance, Junior, Permanent
-      ('Alice Brown', 'alice.brown@example.com', 'hashed_password_4', 2, 1, 4, 3), -- Design, Senior, Permanent
-      ('Bob Williams', 'bob.williams@example.com', 'hashed_password_5', 2, 3, 1, 2); -- Development, Associate, Probation
+      ('Admin Shrestha', 'admin@yopmail.com', '$2b$10$zabvb6qx1oSsC4Bmfa6Jb.LFpEXnL5SvCS1g6G0sR7e8IaTTItrVm', NULL, 4, 4, 3);
 
       -- Inserting data into the 'user_state_history' table (adjusting area, designation, employment status IDs)
       INSERT INTO user_state_history (user_id, area_id, designation_id, employment_status_id, start_date, end_date) VALUES
-      (1, 4, 4, 3, '2024-03-15', NULL),
-      (2, 3, 2, 1, '2023-08-20', '2024-04-10'), -- Development, Junior, Hired
-      (2, 3, 3, 3, '2024-04-11', NULL),
-      (3, 2, 2, 3, '2024-05-01', NULL),
-      (4, 1, 3, 3, '2023-12-01', '2025-04-15'), -- Design, Mid-Level, Permanent
-      (4, 1, 4, 3, '2025-04-16', NULL),
-      (5, 3, 1, 2, '2025-01-01', NULL);
+      (1, 4, 4, 3, '2020-01-01', NULL);
 
       -- Inserting data into the 'team_allocation' table (using the new team names)
       INSERT INTO team_allocation (user_id, team_id, role_in_team, start_date, end_date, allocation_percentage) VALUES
-      (2, 1, 'Lead Developer', '2024-02-20', NULL, 100.00), -- Project Chimera
-      (1, 2, 'Project Manager', '2024-03-01', '2025-03-01', 75.00), -- Project Phoenix
-      (3, 3, 'QA Engineer', '2024-06-05', NULL, 100.00),      -- Project Starlight
-      (4, 1, 'UI/UX Designer', '2024-07-01', NULL, 100.00),    -- Project Chimera
-      (1, 2, 'Technical Lead', '2025-03-02', NULL, 100.00),    -- Project Phoenix
-      (2, 4, 'Backend Developer', '2025-04-01', NULL, 60.00);   -- Project Nebula;
+      (1, 2, 'Project Manager', '2024-03-01', '2025-03-01', 75.00); -- Project Phoenix
 
       -- Insert master_data
       INSERT INTO master_data (entity_type, code, label, color)
