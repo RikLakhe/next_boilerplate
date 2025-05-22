@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run Prettier to format code
+npm run prettify
+
+# Run ESLint to fix issues
+npm run lint:fix
+
+# Run TypeScript type checks
+npm run build --noEmit
+
+# Check for uncommitted changes
+if ! git diff --quiet; then
+  echo "Uncommitted changes detected. Please commit or stash them before running the pre-commit hook."
+  exit 1
+fi

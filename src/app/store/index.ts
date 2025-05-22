@@ -1,11 +1,16 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import masterDataReducer from "./features/masterData/masterData.slice";
+import userDataReducer from "./features/directory/user.slice";
 import eventsReducer from "./features/events/events.slice";
+import departmentReducer from "./features/department/department.slice";
 import fiscalYearReducer from "./features/fiscalYear/fiscal.slice";
+// import other reducers...
 
 const rootReducer = combineReducers({
   masterData: masterDataReducer,
+  userData: userDataReducer,
   events: eventsReducer,
+  department: departmentReducer,
   fiscalYear: fiscalYearReducer,
 });
 

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { DepartmentsController } from "@/server/modules/departments/department.controller";
+import { DepartmentController } from "@/server/modules/departments/department.controller";
 
-const departmentsController = new DepartmentsController();
+const departmentsController = new DepartmentController();
 
 export default async function handler(
   req: NextApiRequest,

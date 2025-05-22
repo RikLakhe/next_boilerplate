@@ -11,14 +11,15 @@ import {
   Row,
   Space,
   Table,
+  Alert,
 } from "antd";
+import { ColumnType } from "antd/es/table";
 import dayjs from "dayjs";
 
 import AdminLayout from "@/app/components/layout/AdminLayout";
 import { AdminTitleBanner } from "@/app/components/shared/TitleBanner";
 import { useAppDispatch } from "@/app/hooks/useAppDispatch";
 
-import { EventsAppProps } from "@/types/calendar";
 import { FiscalYearAppController } from "@/server/modules/fiscalYear/fiscalYear.appController";
 import { FiscalYear } from "@prisma/client";
 import {
@@ -27,9 +28,7 @@ import {
   updateFiscalYear,
 } from "@/app/store/features/fiscalYear/fiscalAPI.service";
 import { setFiscalYear } from "@/app/store/features/fiscalYear/fiscal.slice";
-import Alert from "antd/es/alert/Alert";
 import { useFiscalYear } from "@/app/hooks/useFiscalYear";
-import { ColumnType } from "antd/es/table";
 
 export async function getServerSideProps() {
   const fiscalYearAppController = new FiscalYearAppController();
@@ -65,13 +64,6 @@ const FiscalPage = ({
   const [selectedFiscalYearId, setSelectedFiscalYearId] = useState<
     number | undefined
   >(undefined);
-
-  console.log(
-    "%csrc/pages/admin/company/fiscal.tsx:63 initialFiscalYear",
-    "color: #007acc;",
-    initialFiscalYear,
-    formError,
-  );
 
   const onModelOpen = () => {
     setIsModalOpen(true);

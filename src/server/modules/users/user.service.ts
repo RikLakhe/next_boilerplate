@@ -37,12 +37,12 @@ export class UsersService {
     try {
       return await this.prismaClient.user.findMany();
     } catch (error) {
-      logger.error("Error finding all areas:", error);
-      throw new HttpException(500, "Failed to retrieve areas.");
+      logger.error("Error finding all users:", error);
+      throw new HttpException(500, "Failed to retrieve users.");
     }
   }
 
-  async findOne(id: number): Promise<User | null> {
+  async findOne(id: number): Promise<User> {
     try {
       const user = await this.prismaClient.user.findUnique({
         where: { id },
@@ -59,15 +59,22 @@ export class UsersService {
     }
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<{ newValue: User; oldValue: User }> {
     try {
-      // First check if area exists
-      await this.findOne(id);
+      const oldValue = await this.findOne(id);
 
-      return await this.prismaClient.user.update({
+      const newValue = await this.prismaClient.user.update({
         where: { id },
         data: updateUserDto,
       });
+
+      return {
+        newValue,
+        oldValue,
+      };
     } catch (error) {
       if (error instanceof HttpException) throw error; // Re-throw known HTTP/not found errors
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -78,7 +85,7 @@ export class UsersService {
           );
           throw new HttpException(
             409,
-            `User full name '${updateUserDto.fullName}' might already be in use.`,
+            `User name '${updateUserDto.fullName}' might already be in use.`,
           );
         }
         if (error.code === "P2025") {

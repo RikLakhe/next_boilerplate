@@ -20,8 +20,4 @@ export class CreateDepartmentDto {
   @IsNumber()
   @IsOptional()
   departmentManagerId?: number;
-
-  @IsNumber()
-  @IsOptional()
-  createdBy?: number;
 }

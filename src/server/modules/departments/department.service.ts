@@ -1,9 +1,11 @@
 import { Prisma, Department } from "@prisma/client";
+
+import { DepartmentProps } from "@/types/department";
 import { prisma } from "@/server/common/prisma/client";
 import { HttpException } from "@/server/common/exceptions/http-exception";
 import logger from "@/server/common/utils/logger.util";
 import { CreateDepartmentDto } from "./dtos/create-department.dto";
-import { UpdateDepartmentDto } from "./dtos/update-department";
+import { UpdateDepartmentDto } from "./dtos/update-department.dto";
 
 export class DepartmentService {
   constructor(private readonly prismaClient = prisma) {} // Default to singleton
@@ -63,7 +65,7 @@ export class DepartmentService {
   async update(
     id: number,
     updateDepartmentDto: UpdateDepartmentDto,
-  ): Promise<Department> {
+  ): Promise<DepartmentProps> {
     try {
       // First check if department exists
       await this.findOne(id);
@@ -100,46 +102,6 @@ export class DepartmentService {
       throw new HttpException(
         500,
         `Failed to update department with ID ${id}.`,
-      );
-    }
-  }
-
-  async remove(id: number): Promise<Department> {
-    try {
-      // First check if department exists
-      await this.findOne(id);
-
-      return await this.prismaClient.department.delete({
-        where: { id },
-      });
-    } catch (error) {
-      if (error instanceof HttpException) throw error; // Re-throw known HTTP/not found errors
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === "P2025") {
-          // Record to delete not found
-          logger.warn(
-            `Not Found: Department with ID ${id} not found for deletion.`,
-          );
-          throw new HttpException(
-            404,
-            `Department with ID ${id} not found for deletion.`,
-          );
-        }
-        // Handle potential foreign key constraint errors (P2003) if department are linked elsewhere
-        if (error.code === "P2003") {
-          logger.warn(
-            `Conflict: Cannot delete department with ID ${id} as it is referenced elsewhere.`,
-          );
-          throw new HttpException(
-            409,
-            `Cannot delete department with ID ${id} as it is referenced elsewhere.`,
-          );
-        }
-      }
-      logger.error(`Error removing department with ID ${id}:`, error);
-      throw new HttpException(
-        500,
-        `Failed to remove department with ID ${id}.`,
       );
     }
   }

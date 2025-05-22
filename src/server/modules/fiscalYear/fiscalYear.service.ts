@@ -1,4 +1,4 @@
-import { FiscalYear, Prisma } from "@prisma/client";
+import { FiscalYear } from "@prisma/client";
 import { prisma } from "@/server/common/prisma/client";
 import { HttpException } from "@/server/common/exceptions/http-exception";
 import logger from "@/server/common/utils/logger.util";

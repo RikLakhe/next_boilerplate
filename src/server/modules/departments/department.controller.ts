@@ -1,48 +1,67 @@
 import { NextApiRequest, NextApiResponse } from "next";
+
 import { validateDto } from "@/server/common/utils/validation.util";
 import logger from "@/server/common/utils/logger.util";
 import { HttpException } from "@/server/common/exceptions/http-exception";
 import { DepartmentService } from "./department.service";
 import { CreateDepartmentDto } from "./dtos/create-department.dto";
+import { UpdateDepartmentDto } from "./dtos/update-department.dto";
 
-export class DepartmentsController {
-  private readonly departmentsService: DepartmentService;
+export class DepartmentController {
+  private readonly departmentService: DepartmentService;
 
   constructor() {
-    this.departmentsService = new DepartmentService();
-  }
-
-  async create(req: NextApiRequest, res: NextApiResponse) {
-    try {
-      const createDto = await validateDto(CreateDepartmentDto, req.body);
-      const newDepartment = await this.departmentsService.create(createDto);
-      res.status(201).json(newDepartment);
-    } catch (error) {
-      DepartmentsController.handleError(error, res);
-    }
+    this.departmentService = new DepartmentService();
   }
 
   async findAll(req: NextApiRequest, res: NextApiResponse) {
     try {
-      const departments = await this.departmentsService.findAll();
-      res.status(200).json(departments);
+      const department = await this.departmentService.findAll();
+      res.status(200).json(department);
     } catch (error) {
-      DepartmentsController.handleError(error, res);
+      DepartmentController.handleError(error, res);
     }
   }
 
   async list(req: NextApiRequest, res: NextApiResponse) {
     try {
-      const departments = await this.departmentsService.findAll();
-      const dropdownList = departments.map((department) => {
+      const department = await this.departmentService.findAll();
+      const dropdownList = department.map((data) => {
         return {
-          code: department.id,
-          title: department.departmentName,
+          id: data.id,
+          departmentName: data.departmentName,
+          description: data.description,
+          departmentManagerId: data.departmentManagerId,
         };
       });
       res.status(200).json(dropdownList);
     } catch (error) {
-      DepartmentsController.handleError(error, res);
+      DepartmentController.handleError(error, res);
+    }
+  }
+
+  async create(req: NextApiRequest, res: NextApiResponse) {
+    try {
+      const createDto = await validateDto(CreateDepartmentDto, req.body);
+
+      const newDepartment = await this.departmentService.create(createDto);
+      res.status(201).json(newDepartment);
+    } catch (error) {
+      DepartmentController.handleError(error, res);
+    }
+  }
+
+  async update(req: NextApiRequest, res: NextApiResponse) {
+    try {
+      const updateDto = await validateDto(UpdateDepartmentDto, req.body);
+
+      const newDepartment = await this.departmentService.update(
+        updateDto.id,
+        updateDto,
+      );
+      res.status(201).json(newDepartment);
+    } catch (error) {
+      DepartmentController.handleError(error, res);
     }
   }
 

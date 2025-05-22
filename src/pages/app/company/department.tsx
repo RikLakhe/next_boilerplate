@@ -41,21 +41,6 @@ export async function getServerSideProps({ req }: { req: IncomingMessage }) {
           error instanceof Error ? error.message : "An unknown error occurred";
       }
     }
-
-    if (action === "delete") {
-      const id = formData.get("deleteId");
-      try {
-        if (id) {
-          await departmentsService.remove(parseInt(id, 10));
-        } else {
-          throw new Error("Invalid ID: ID cannot be null");
-        }
-        formSuccess = "Item deleted successfully!";
-      } catch (error) {
-        formError =
-          error instanceof Error ? error.message : "An unknown error occurred";
-      }
-    }
   }
 
   try {

@@ -24,8 +24,8 @@ export class FiscalYearController {
 
   async findOne(req: NextApiRequest, res: NextApiResponse) {
     try {
-      const id = parseInt(req.query.id as string);
-      if (isNaN(id)) {
+      const id = parseInt(req.query.id as string, 10);
+      if (Number.isNaN(id)) {
         throw new HttpException(400, "Invalid ID parameter");
       }
 
