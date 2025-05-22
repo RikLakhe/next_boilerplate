@@ -10,8 +10,8 @@ import {
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 
-import AdminLayout from "@/app/components/layout/AdminLayout";
-import { AdminTitleBanner } from "@/app/components/shared/TitleBanner";
+import AdminLayout from "@/client/components/layout/AdminLayout";
+import { AdminTitleBanner } from "@/client/components/shared/TitleBanner";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { LayoutPageProps } from "@/types";

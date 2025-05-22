@@ -1,18 +1,20 @@
 import React from "react";
 import { Layout, Menu } from "antd";
 import { useRouter } from "next/router";
-import { MENU_CONFIG } from "@/app/config/menu";
-import { AppMenuInterface } from "@/types/menu";
+import { ADMIN_MENU_CONFIG } from "@/client/config/menu";
+import { AdminMenuInterface } from "@/types/menu";
+import { LogoutOutlined } from "@ant-design/icons";
+import { disableAdminMode } from "@/client/utils";
 
 const { Sider } = Layout;
 
-const AppLeftSidebar: React.FC<{
+const AdminLeftSidebar: React.FC<{
   collapsed: boolean;
   onCollapse: (collapsed: boolean) => void;
 }> = ({ collapsed, onCollapse }) => {
   const router = useRouter();
 
-  const renderMenuItems = (items: AppMenuInterface[]) => {
+  const renderMenuItems = (items: AdminMenuInterface[]) => {
     return items.map((item) => {
       if (item.key.includes("divider")) {
         return <Menu.Divider key={item.key} />;
@@ -20,7 +22,7 @@ const AppLeftSidebar: React.FC<{
 
       if (item.subMenu) {
         return (
-          <Menu.SubMenu key={item.key} icon={item.icon} title={item.label}>
+          <Menu.SubMenu key={item.key} title={item.label}>
             {renderMenuItems(item.subMenu)}
           </Menu.SubMenu>
         );
@@ -28,7 +30,6 @@ const AppLeftSidebar: React.FC<{
       return (
         <Menu.Item
           key={item.key}
-          icon={item.icon}
           onClick={() => {
             return router.push(item.path!);
           }}
@@ -41,21 +42,23 @@ const AppLeftSidebar: React.FC<{
 
   return (
     <Sider
-      collapsible
+      // collapsible
       collapsed={collapsed}
       onCollapse={onCollapse}
       style={{
         overflow: "auto",
-        height: "100vh",
+        height: "90vh",
         position: "sticky",
         insetInlineStart: 0,
         top: 0,
         bottom: 0,
         scrollbarWidth: "thin",
         scrollbarGutter: "stable",
+        background: "transparent",
+        cursor: "pointer",
       }}
     >
-      <Menu theme="dark" mode="inline">
+      <Menu mode="inline">
         <div
           className="logo"
           style={{
@@ -69,26 +72,35 @@ const AppLeftSidebar: React.FC<{
             lineHeight: "32px",
             background: "rgba(255, 255, 255, 0.3)",
             overflow: "hidden",
-            cursor: "pointer",
           }}
           role="button"
           tabIndex={0}
           onClick={() => {
-            router.push("/");
+            router.push("/admin");
           }}
           onKeyPress={(e) => {
             if (e.key === "Enter" || e.key === " ") {
-              router.push("/");
+              router.push("/admin");
             }
           }}
         >
           ARICA-HR
         </div>
         <Menu.Divider />
-        {renderMenuItems(MENU_CONFIG)}
+        {renderMenuItems(ADMIN_MENU_CONFIG)}
+        <Menu.Divider />
+        <Menu.Item
+          key="exitAdmin"
+          icon={<LogoutOutlined />}
+          onClick={() => {
+            disableAdminMode();
+          }}
+        >
+          Exit Admin Mode
+        </Menu.Item>
       </Menu>
     </Sider>
   );
 };
 
-export default AppLeftSidebar;
+export default AdminLeftSidebar;

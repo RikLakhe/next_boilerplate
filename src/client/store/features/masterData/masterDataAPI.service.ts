@@ -1,4 +1,4 @@
-import axiosConfig from "@/app/config/axiosConfig";
+import axiosConfig from "@/client/config/axiosConfig";
 import { MasterData } from "@prisma/client";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";

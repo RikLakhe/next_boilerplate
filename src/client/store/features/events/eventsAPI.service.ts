@@ -1,4 +1,4 @@
-import axiosConfig from "@/app/config/axiosConfig";
+import axiosConfig from "@/client/config/axiosConfig";
 import { EventsAppProps } from "@/types/calendar";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 

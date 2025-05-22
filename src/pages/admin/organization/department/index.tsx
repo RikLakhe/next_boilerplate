@@ -9,32 +9,33 @@ import {
   Space,
   Row,
   Col,
+  Card,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { ReactElement, useEffect, useState } from "react";
 
-import { DepartmentProps } from "@/types/department";
-import { useAppDispatch } from "@/app/hooks/useAppDispatch";
-import { useDepartment } from "@/app/hooks/useDepartment";
-import { setDepartment } from "@/app/store/features/department/department.slice";
+import { DepartmentDetail } from "@/types/department";
+import { useAppDispatch } from "@/client/hooks/useAppDispatch";
+import { useDepartment } from "@/client/hooks/useDepartment";
+import { setDepartment } from "@/client/store/features/department/department.slice";
 import {
   fetchDepartment,
   storeDepartment,
   updateDepartment,
-} from "@/app/store/features/department/departmentAPI.service";
-import AdminLayout from "@/app/components/layout/AdminLayout";
-import TitleBanner from "@/app/components/shared/TitleBanner";
+} from "@/client/store/features/department/departmentAPI.service";
+import AdminLayout from "@/client/components/layout/AdminLayout";
+import TitleBanner from "@/client/components/shared/TitleBanner";
 import { DepartmentAppController } from "@/server/modules/departments/department.appController";
 
 export async function getServerSideProps() {
   const departmentsService = new DepartmentAppController();
 
   try {
-    const departments = await departmentsService.listByEntity();
+    const departments = await departmentsService.list();
 
     return {
       props: {
-        initialDepartment: departments,
+        initialDepartment: JSON.parse(JSON.stringify(departments)),
       },
     };
   } catch (error) {
@@ -50,7 +51,7 @@ const Departments = ({
   initialDepartment,
   initialDepartmentError,
 }: {
-  initialDepartment: DepartmentProps[];
+  initialDepartment: DepartmentDetail[];
   initialDepartmentError: string;
 }) => {
   const dispatch = useAppDispatch();
@@ -60,10 +61,10 @@ const Departments = ({
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [formError, setFormError] = useState<string | undefined>(undefined);
   const [selectedRecord, setSelectedRecord] = useState<
-    DepartmentProps | undefined
+    DepartmentDetail | undefined
   >(undefined);
 
-  const showDrawer = (data?: DepartmentProps | undefined) => {
+  const showDrawer = (data?: DepartmentDetail | undefined) => {
     setSelectedRecord(data);
     setIsDrawerOpen(true);
   };
@@ -87,14 +88,21 @@ const Departments = ({
       key: "description",
     },
     {
-      title: "Manager Id",
+      title: "Department Manager",
       dataIndex: "departmentManagerId",
       key: "departmentManagerId",
+      render: (_: unknown, record: DepartmentDetail) => {
+        return record.departmentManager?.fullName;
+      },
+    },
+    {
+      title: "Department Members",
+      key: "departmentMembers",
     },
     {
       title: "Action",
       key: "action",
-      render: (_: unknown, record: DepartmentProps) => {
+      render: (_: unknown, record: DepartmentDetail) => {
         return (
           <Button
             type="default"
@@ -154,7 +162,9 @@ const Departments = ({
         <Alert message={initialDepartmentError} type="error" closable />
       )}
 
-      <Table<DepartmentProps> columns={columns} dataSource={department} />
+      <Card>
+        <Table<DepartmentDetail> columns={columns} dataSource={department} />
+      </Card>
 
       {!initialDepartmentError && (
         <Drawer

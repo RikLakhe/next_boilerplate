@@ -1,15 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// import { MasterDataProps } from "@/types/masterData";
-import { UserProps } from "@/types/user";
-
+import { User } from "@prisma/client";
 import { fetchUser, storeUser, updateUser } from "./userDataAPI.service";
 
 interface UserState {
-  data: UserProps[];
+  data: User[];
   loading: boolean;
   error: string | undefined;
-  actionData: UserProps | null;
+  actionData: User | null;
   actionLoading: boolean;
   actionError: string | undefined;
 }
@@ -27,7 +25,7 @@ const userSlice = createSlice({
   name: "userData",
   initialState,
   reducers: {
-    setUserData(state, action: PayloadAction<UserProps[]>) {
+    setUserData(state, action: PayloadAction<User[]>) {
       state.data = action.payload;
     },
   },
@@ -49,11 +47,7 @@ const userSlice = createSlice({
       })
       .addCase(storeUser.fulfilled, (state, action) => {
         state.actionLoading = false;
-        const newData = {
-          ...action.payload,
-          fullName: action.payload?.full_name,
-        };
-        state.data.push(newData);
+        state.data.push(action.payload);
       })
       .addCase(storeUser.rejected, (state, { error }) => {
         state.actionLoading = false;
@@ -67,7 +61,6 @@ const userSlice = createSlice({
         state.actionData = action.payload;
         const updatedData = {
           ...action.payload,
-          fullName: action.payload?.full_name,
         };
         const newData = [
           ...state.data.filter((data) => {

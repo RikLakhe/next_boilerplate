@@ -1,6 +1,6 @@
 "use client";
 
-import MainLayout from "@/app/components/layout/MainLayout";
+import MainLayout from "@/client/components/layout/MainLayout";
 import { Badge, BadgeProps, Calendar, CalendarProps } from "antd";
 import { Dayjs } from "dayjs";
 

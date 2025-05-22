@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout, theme, Button } from "antd";
-import { disableAdminMode } from "@/app/utils";
+import { disableAdminMode } from "@/client/utils";
 import TitleBanner from "../shared/TitleBanner";
 
 const { Header } = Layout;

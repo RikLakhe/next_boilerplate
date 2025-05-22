@@ -3,8 +3,8 @@ import { Button, Alert, Modal, Input, Flex, Table } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
 import { IncomingMessage } from "http";
-import MainLayout from "@/app/components/layout/MainLayout";
-import TitleBanner from "@/app/components/shared/TitleBanner";
+import MainLayout from "@/client/components/layout/MainLayout";
+import TitleBanner from "@/client/components/shared/TitleBanner";
 
 export async function getServerSideProps({ req }: { req: IncomingMessage }) {
   let formError: string | null = null;

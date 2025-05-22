@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-import AdminLayout from "@/app/components/layout/AdminLayout";
+import AdminLayout from "@/client/components/layout/AdminLayout";
 import { LayoutPageProps } from "@/types";
 
 const CalendarGeneralPage: LayoutPageProps = () => {

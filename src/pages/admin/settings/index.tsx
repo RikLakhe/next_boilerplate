@@ -20,22 +20,22 @@ import {
 import Sider from "antd/es/layout/Sider";
 import { Content } from "antd/es/layout/layout";
 
-import AdminLayout from "@/app/components/layout/AdminLayout";
+import AdminLayout from "@/client/components/layout/AdminLayout";
 import { LayoutPageProps } from "@/types";
-import { AdminTitleBanner } from "@/app/components/shared/TitleBanner";
+import { AdminTitleBanner } from "@/client/components/shared/TitleBanner";
 import { MasterDataMenuInterface } from "@/types/menu";
-import { MASTER_DATA_MENU_CONFIG } from "@/app/config/menu";
+import { MASTER_DATA_MENU_CONFIG } from "@/client/config/menu";
 import { MasterDataAppController } from "@/server/modules/masterData/masterData.appController";
 
-import { MASTER_DATA_DROPDOWN } from "@/app/config/masterData";
-import { useMasterData } from "@/app/hooks/useMasterData";
-import { useAppDispatch } from "@/app/hooks/useAppDispatch";
+import { MASTER_DATA_DROPDOWN } from "@/client/config/masterData";
+import { useMasterData } from "@/client/hooks/useMasterData";
+import { useAppDispatch } from "@/client/hooks/useAppDispatch";
 import {
   fetchMasterData,
   storeMasterData,
   updateMasterData,
-} from "@/app/store/features/masterData/masterDataAPI.service";
-import { setMasterData } from "@/app/store/features/masterData/masterData.slice";
+} from "@/client/store/features/masterData/masterDataAPI.service";
+import { setMasterData } from "@/client/store/features/masterData/masterData.slice";
 import { MasterData } from "@prisma/client";
 
 const { Option } = Select;

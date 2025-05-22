@@ -1,6 +1,5 @@
-export interface DepartmentProps {
-  id?: number;
-  departmentName: string;
-  description: string | null | undefined;
-  departmentManagerId?: number | null;
+import { Department, User } from "@prisma/client";
+
+export interface DepartmentDetail extends Department {
+  departmentManager: User | null;
 }

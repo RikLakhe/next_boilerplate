@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { DepartmentProps } from "@/types/department";
+import { DepartmentDetail } from "@/types/department";
 import {
   fetchDepartment,
   storeDepartment,
@@ -8,10 +8,10 @@ import {
 } from "./departmentAPI.service";
 
 interface DepartmentState {
-  data: DepartmentProps[];
+  data: DepartmentDetail[];
   loading: boolean;
   error: string | null;
-  actionData: DepartmentProps | null;
+  actionData: DepartmentDetail | null;
   actionLoading: boolean;
   actionError: string | null;
 }
@@ -29,7 +29,7 @@ const departmentSlice = createSlice({
   name: "departmentData",
   initialState,
   reducers: {
-    setDepartment(state, action: PayloadAction<DepartmentProps[]>) {
+    setDepartment(state, action: PayloadAction<DepartmentDetail[]>) {
       state.data = action.payload;
     },
   },

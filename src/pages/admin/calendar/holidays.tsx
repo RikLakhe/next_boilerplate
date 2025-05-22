@@ -12,8 +12,8 @@ import {
   Space,
 } from "antd";
 
-import AdminLayout from "@/app/components/layout/AdminLayout";
-import { AdminTitleBanner } from "@/app/components/shared/TitleBanner";
+import AdminLayout from "@/client/components/layout/AdminLayout";
+import { AdminTitleBanner } from "@/client/components/shared/TitleBanner";
 
 const { Option } = Select;
 

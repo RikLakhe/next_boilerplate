@@ -17,22 +17,22 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 
-import AdminLayout from "@/app/components/layout/AdminLayout";
-import { AdminTitleBanner } from "@/app/components/shared/TitleBanner";
-import { useAppDispatch } from "@/app/hooks/useAppDispatch";
-import { useMasterData } from "@/app/hooks/useMasterData";
+import AdminLayout from "@/client/components/layout/AdminLayout";
+import { AdminTitleBanner } from "@/client/components/shared/TitleBanner";
+import { useAppDispatch } from "@/client/hooks/useAppDispatch";
+import { useMasterData } from "@/client/hooks/useMasterData";
 import { EventsAppController } from "@/server/modules/events/events.appController";
 import { EventsAppProps } from "@/types/calendar";
-import { setEvents } from "@/app/store/features/events/events.slice";
+import { setEvents } from "@/client/store/features/events/events.slice";
 import {
   fetchEvents,
   storeEvents,
   updateEvents,
-} from "@/app/store/features/events/eventsAPI.service";
+} from "@/client/store/features/events/eventsAPI.service";
 import { MasterDataAppController } from "@/server/modules/masterData/masterData.appController";
-import { setMasterData } from "@/app/store/features/masterData/masterData.slice";
-import { fetchMasterData } from "@/app/store/features/masterData/masterDataAPI.service";
-import { useEvents } from "@/app/hooks/useEvents";
+import { setMasterData } from "@/client/store/features/masterData/masterData.slice";
+import { fetchMasterData } from "@/client/store/features/masterData/masterDataAPI.service";
+import { useEvents } from "@/client/hooks/useEvents";
 import { MasterData } from "@prisma/client";
 
 const { Option } = Select;

@@ -22,13 +22,7 @@ export class UserController {
 
   async create(req: NextApiRequest, res: NextApiResponse) {
     try {
-      const formData = {
-        full_name: req.body.fullName,
-        email: req.body.email,
-        password_hash: req.body.password,
-        current_employment_status_id: 1,
-      };
-      const createDto = await validateDto(CreateUserDto, formData);
+      const createDto = await validateDto(CreateUserDto, req.body);
       const newUser = await this.usersService.create(createDto);
 
       const createAuditLogDto = await validateDto(CreateAuditLogsDto, {
@@ -74,23 +68,16 @@ export class UserController {
 
   async update(req: NextApiRequest, res: NextApiResponse) {
     try {
-      const formData = {
-        id: req.body.id,
-        full_name: req.body.fullName,
-        email: req.body.email,
-        password_hash: req.body.password,
-        current_employment_status_id: 1,
-      };
-      const updateDto = await validateDto(UpdateUserDto, formData);
+      const updateDto = await validateDto(UpdateUserDto, req.body);
 
       const userData = await this.usersService.update(updateDto.id, updateDto);
       const createAuditLogDto = await validateDto(CreateAuditLogsDto, {
         entity: ENTITY,
-        entity_id: updateDto.id,
+        entityId: updateDto.id,
         newValue: userData.newValue,
         oldValue: userData.oldValue,
-        request_type: "UPDATE",
-        requested_by: 1,
+        requestType: "UPDATE",
+        requestedBy: 1,
       });
 
       await this.auditLogService.create(createAuditLogDto);

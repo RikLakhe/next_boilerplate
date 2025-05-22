@@ -1,4 +1,4 @@
-import "@/app/styles/globals.css";
+import "@/client/styles/globals.css";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { ConfigProvider, Spin, theme } from "antd";
@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import "antd/dist/reset.css";
 
-import { AppStore } from "@/app/store";
+import { AppStore } from "@/client/store";
 
 const { darkAlgorithm } = theme;
 

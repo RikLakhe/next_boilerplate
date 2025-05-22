@@ -2,6 +2,8 @@ import { Prisma, User } from "@prisma/client";
 import { prisma } from "@/server/common/prisma/client"; // Import the singleton instance
 import { HttpException } from "@/server/common/exceptions/http-exception";
 import logger from "@/server/common/utils/logger.util";
+import bcrypt from "bcryptjs";
+import { UserDetails } from "@/types/user";
 import { CreateUserDto } from "./dtos/create-user.dto";
 import { UpdateUserDto } from "./dtos/update-user.dto";
 
@@ -10,32 +12,63 @@ export class UsersService {
   // If using a DI container later, you'd inject PrismaClient here.
   constructor(private readonly prismaClient = prisma) {} // Default to singleton
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<UserDetails> {
     try {
+      const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+      const { password, ...userDataWithoutPassword } = createUserDto;
       return await this.prismaClient.user.create({
-        data: createUserDto,
+        data: {
+          ...userDataWithoutPassword,
+          passwordHash: hashedPassword,
+          currentEmploymentStatusId: 1,
+        },
+        select: {
+          id: true,
+          fullName: true,
+          email: true,
+          createdBy: true,
+          createdOn: true,
+          updatedBy: true,
+          updatedOn: true,
+          currentEmploymentStatus: true,
+          currentArea: true,
+          currentDesignation: true,
+          manager: true,
+          passwordHash: true,
+          currentEmploymentStatusId: true,
+          currentAreaId: true,
+          currentDesignationId: true,
+          managerId: true,
+        },
       });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         // Handle unique constraint violation (P2002)
         if (error.code === "P2002") {
           logger.warn(
-            `Conflict: Area with name '${createUserDto.fullName}' already exists.`,
+            `Conflict: User with name '${createUserDto.fullName}' already exists.`,
           );
           throw new HttpException(
             409,
-            `Area with name '${createUserDto.fullName}' already exists.`,
+            `User with name '${createUserDto.fullName}' already exists.`,
           );
         }
       }
-      logger.error("Error creating area:", error);
-      throw new HttpException(500, "Failed to create area.");
+      logger.error("Error creating user:", error);
+      throw new HttpException(500, "Failed to create user.");
     }
   }
 
   async findAll(): Promise<User[]> {
     try {
-      return await this.prismaClient.user.findMany();
+      return await this.prismaClient.user.findMany({
+        include: {
+          currentEmploymentStatus: true,
+          currentArea: true,
+          currentDesignation: true,
+          manager: true,
+        },
+      });
     } catch (error) {
       logger.error("Error finding all users:", error);
       throw new HttpException(500, "Failed to retrieve users.");
@@ -66,9 +99,14 @@ export class UsersService {
     try {
       const oldValue = await this.findOne(id);
 
+      if (updateUserDto.password) {
+        const hashedPassword = await bcrypt.hash(updateUserDto.password, 10);
+        updateUserDto.password = hashedPassword;
+      }
+      const { password, ...userDataWithoutPassword } = updateUserDto;
       const newValue = await this.prismaClient.user.update({
         where: { id },
-        data: updateUserDto,
+        data: userDataWithoutPassword,
       });
 
       return {

@@ -1,6 +1,6 @@
 import { Prisma, Department } from "@prisma/client";
 
-import { DepartmentProps } from "@/types/department";
+import { DepartmentDetail } from "@/types/department";
 import { prisma } from "@/server/common/prisma/client";
 import { HttpException } from "@/server/common/exceptions/http-exception";
 import logger from "@/server/common/utils/logger.util";
@@ -33,9 +33,20 @@ export class DepartmentService {
     }
   }
 
-  async findAll(): Promise<Department[]> {
+  async findAll(): Promise<DepartmentDetail[]> {
     try {
-      return await this.prismaClient.department.findMany();
+      const departments = await this.prismaClient.department.findMany({
+        include: {
+          departmentManager: true,
+        },
+      });
+
+      return departments.map((dept) => {
+        return {
+          ...dept,
+          departmentManager: dept.departmentManager || null,
+        };
+      });
     } catch (error) {
       logger.error("Error finding all department:", error);
       throw new HttpException(500, "Failed to retrieve department.");
@@ -65,7 +76,7 @@ export class DepartmentService {
   async update(
     id: number,
     updateDepartmentDto: UpdateDepartmentDto,
-  ): Promise<DepartmentProps> {
+  ): Promise<DepartmentDetail> {
     try {
       // First check if department exists
       await this.findOne(id);
@@ -73,6 +84,9 @@ export class DepartmentService {
       return await this.prismaClient.department.update({
         where: { id },
         data: updateDepartmentDto,
+        include: {
+          departmentManager: true,
+        },
       });
     } catch (error) {
       if (error instanceof HttpException) throw error; // Re-throw known HTTP/not found errors

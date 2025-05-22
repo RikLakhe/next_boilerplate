@@ -16,9 +16,9 @@ import {
 import { ColumnType } from "antd/es/table";
 import dayjs from "dayjs";
 
-import AdminLayout from "@/app/components/layout/AdminLayout";
-import { AdminTitleBanner } from "@/app/components/shared/TitleBanner";
-import { useAppDispatch } from "@/app/hooks/useAppDispatch";
+import AdminLayout from "@/client/components/layout/AdminLayout";
+import { AdminTitleBanner } from "@/client/components/shared/TitleBanner";
+import { useAppDispatch } from "@/client/hooks/useAppDispatch";
 
 import { FiscalYearAppController } from "@/server/modules/fiscalYear/fiscalYear.appController";
 import { FiscalYear } from "@prisma/client";
@@ -26,9 +26,9 @@ import {
   fetchFiscalYear,
   storeFiscalYear,
   updateFiscalYear,
-} from "@/app/store/features/fiscalYear/fiscalAPI.service";
-import { setFiscalYear } from "@/app/store/features/fiscalYear/fiscal.slice";
-import { useFiscalYear } from "@/app/hooks/useFiscalYear";
+} from "@/client/store/features/fiscalYear/fiscalAPI.service";
+import { setFiscalYear } from "@/client/store/features/fiscalYear/fiscal.slice";
+import { useFiscalYear } from "@/client/hooks/useFiscalYear";
 
 export async function getServerSideProps() {
   const fiscalYearAppController = new FiscalYearAppController();

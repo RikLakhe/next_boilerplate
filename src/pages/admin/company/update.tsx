@@ -20,7 +20,7 @@ import {
 } from "antd";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import AdminLayout from "@/app/components/layout/AdminLayout";
+import AdminLayout from "@/client/components/layout/AdminLayout";
 import { LayoutPageProps } from "@/types";
 import { WorkingWeekData } from "@/types/company";
 

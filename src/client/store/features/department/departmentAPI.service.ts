@@ -1,20 +1,23 @@
-import axiosConfig from "@/app/config/axiosConfig";
-import { DepartmentProps } from "@/types/department";
+import axiosConfig from "@/client/config/axiosConfig";
+import { DepartmentDetail } from "@/types/department";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchDepartment = createAsyncThunk(
   "fetch/department",
   async () => {
-    const resp = await axiosConfig.get<DepartmentProps[]>("/department");
+    const resp = await axiosConfig.get<DepartmentDetail[]>("/department");
     return resp.data;
   },
 );
 
 export const storeDepartment = createAsyncThunk(
   "store/department",
-  async (data: DepartmentProps, { rejectWithValue }) => {
+  async (data: DepartmentDetail, { rejectWithValue }) => {
     try {
-      const resp = await axiosConfig.post<DepartmentProps>("/department", data);
+      const resp = await axiosConfig.post<DepartmentDetail>(
+        "/department",
+        data,
+      );
       return resp.data;
     } catch (error) {
       return rejectWithValue(
@@ -26,9 +29,9 @@ export const storeDepartment = createAsyncThunk(
 
 export const updateDepartment = createAsyncThunk(
   "update/department",
-  async (data: DepartmentProps, { rejectWithValue }) => {
+  async (data: DepartmentDetail, { rejectWithValue }) => {
     try {
-      const resp = await axiosConfig.put<DepartmentProps>(
+      const resp = await axiosConfig.put<DepartmentDetail>(
         `/department/${data.id}`,
         data,
       );

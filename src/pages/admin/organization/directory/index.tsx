@@ -12,38 +12,57 @@ import {
   theme,
   Alert,
   notification,
+  Select,
 } from "antd";
 import { Content } from "antd/es/layout/layout";
 
-import AdminLayout from "@/app/components/layout/AdminLayout";
+import AdminLayout from "@/client/components/layout/AdminLayout";
 import { LayoutPageProps } from "@/types";
-import { AdminTitleBanner } from "@/app/components/shared/TitleBanner";
-import { useAppDispatch } from "@/app/hooks/useAppDispatch";
+import { AdminTitleBanner } from "@/client/components/shared/TitleBanner";
+import { useAppDispatch } from "@/client/hooks/useAppDispatch";
 import { UserAppController } from "@/server/modules/users/user.appController";
-import { UserProps } from "@/types/user";
-import { useUserData } from "@/app/hooks/useUserData";
-import { setUserData } from "@/app/store/features/directory/user.slice";
+import { useUserData } from "@/client/hooks/useUserData";
+import { setUserData } from "@/client/store/features/directory/user.slice";
 import {
   fetchUser,
   storeUser,
   updateUser,
-} from "@/app/store/features/directory/userDataAPI.service";
+} from "@/client/store/features/directory/userDataAPI.service";
+import { User, EmploymentStatus, Area, Designation } from "@prisma/client";
+import { EmploymentStatusAppController } from "@/server/modules/employmentStatus/employmentStatus.appController";
+import { AreaAppController } from "@/server/modules/areas/area.appController";
+import { DesignationAppController } from "@/server/modules/designation/designation.appController";
+import { UserDetails } from "@/types/user";
+
+const { Option } = Select;
 
 export async function getServerSideProps() {
   const userAppController = new UserAppController();
+  const employmentStatusAppController = new EmploymentStatusAppController();
+  const areaAppController = new AreaAppController();
+  const designationAppController = new DesignationAppController();
 
   try {
     const users = await userAppController.findAll();
+    const employmentStatus = await employmentStatusAppController.list();
+    const areas = await areaAppController.list();
+    const designations = await designationAppController.list();
 
     return {
       props: {
-        initialUsers: users,
+        initialUsers: JSON.parse(JSON.stringify(users)),
+        initialEmploymentStatus: JSON.parse(JSON.stringify(employmentStatus)),
+        initialAreas: JSON.parse(JSON.stringify(areas)),
+        initialDesignations: JSON.parse(JSON.stringify(designations)),
       },
     };
   } catch (error) {
     return {
       props: {
         initialUsers: [],
+        initialEmploymentStatus: [],
+        initialAreas: [],
+        initialDesignations: [],
       },
     };
   }
@@ -51,9 +70,15 @@ export async function getServerSideProps() {
 
 const AdminDirectoryPage: LayoutPageProps = ({
   initialUsers,
+  initialEmploymentStatus,
   initialUsersError,
+  initialAreas,
+  initialDesignations,
 }: {
-  initialUsers: UserProps[];
+  initialUsers: User[];
+  initialEmploymentStatus: EmploymentStatus[];
+  initialAreas: Area[];
+  initialDesignations: Designation[];
   initialUsersError: string;
 }) => {
   const dispatch = useAppDispatch();
@@ -65,13 +90,13 @@ const AdminDirectoryPage: LayoutPageProps = ({
 
   const [formError, setFormError] = useState<string | undefined>(undefined);
 
-  const [selectedRecord, setSelectedRecord] = useState<UserProps | undefined>(
+  const [selectedRecord, setSelectedRecord] = useState<User | undefined>(
     undefined,
   );
 
   const [open, setOpen] = useState(false);
 
-  const showDrawer = (data?: UserProps | undefined) => {
+  const showDrawer = (data?: User | undefined) => {
     setSelectedRecord(data);
     setOpen(true);
   };
@@ -95,9 +120,37 @@ const AdminDirectoryPage: LayoutPageProps = ({
       key: "email",
     },
     {
+      title: "Employment Status",
+      key: "currentEmploymentStatus",
+      render: (record: UserDetails) => {
+        return record.currentEmploymentStatus?.statusName;
+      },
+    },
+    {
+      title: "Area",
+      key: "currentArea",
+      render: (record: UserDetails) => {
+        return record.currentArea?.name;
+      },
+    },
+    {
+      title: "Designation",
+      key: "currentDesignation",
+      render: (record: UserDetails) => {
+        return record.currentDesignation?.title;
+      },
+    },
+    {
+      title: "Manager",
+      key: "manager",
+      render: (record: UserDetails) => {
+        return record.manager?.fullName || "-";
+      },
+    },
+    {
       title: "Action",
       key: "action",
-      render: (record: UserProps) => {
+      render: (record: User) => {
         return (
           <Button
             type="default"
@@ -139,8 +192,8 @@ const AdminDirectoryPage: LayoutPageProps = ({
   return (
     <>
       <AdminTitleBanner
-        title="User Settings"
-        subTitle="Manage User"
+        title="Directory Administration"
+        subTitle="Streamlined User Management for your organization"
         buttons={
           <Button
             type="primary"
@@ -163,7 +216,7 @@ const AdminDirectoryPage: LayoutPageProps = ({
         }}
       >
         <Content style={{ padding: "0 24px", minHeight: 280 }}>
-          <Table<UserProps> columns={defaultColumns} dataSource={userData} />
+          <Table<User> columns={defaultColumns} dataSource={userData} />
         </Content>
       </Layout>
 
@@ -251,18 +304,98 @@ const AdminDirectoryPage: LayoutPageProps = ({
                 <Input placeholder="Please enter e-mail" />
               </Form.Item>
             </Col>
-
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item
-                  name="password"
-                  label="Password"
-                  rules={[{ required: true, message: "Please enter password" }]}
-                >
-                  <Input.Password placeholder="Please enter password" />
-                </Form.Item>
-              </Col>
-            </Row>
+            <Col span={24}>
+              <Form.Item
+                name="password"
+                label="Password"
+                rules={[{ required: true, message: "Please enter password" }]}
+              >
+                <Input.Password placeholder="Please enter password" />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                name="currentEmploymentStatusId"
+                label="Employment Status"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select employment status",
+                  },
+                ]}
+              >
+                <Select placeholder="Please select employment status">
+                  {initialEmploymentStatus.map((status) => {
+                    return (
+                      <Option key={status.id} value={status.id}>
+                        {status.statusName}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="currentAreaId"
+                label="Area"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select area",
+                  },
+                ]}
+              >
+                <Select placeholder="Please select area">
+                  {initialAreas.map((area) => {
+                    return (
+                      <Option key={area.id} value={area.id}>
+                        {area.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="currentDesignationId"
+                label="Designation"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select designation",
+                  },
+                ]}
+              >
+                <Select placeholder="Please select designation">
+                  {initialDesignations.map((designation) => {
+                    return (
+                      <Option key={designation.id} value={designation.id}>
+                        {designation.title}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                name="managerId"
+                label="Manager"
+                rules={[{ required: true, message: "Please select manager" }]}
+              >
+                <Select placeholder="Please select manager">
+                  {initialUsers.map((user) => {
+                    return (
+                      <Option key={user.id} value={user.id}>
+                        {user.fullName}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </Col>
           </Row>
         </Form>
       </Drawer>

@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-import AdminLayout from "@/app/components/layout/AdminLayout";
+import AdminLayout from "@/client/components/layout/AdminLayout";
 
 const Home = () => {
   return <div>This is admin Home Page</div>;

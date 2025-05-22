@@ -8,7 +8,7 @@ import {
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 
-import { enableAdminMode } from "@/app/utils";
+import { enableAdminMode } from "@/client/utils";
 
 const { Header } = Layout;
 

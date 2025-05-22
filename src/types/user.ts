@@ -1,10 +1,8 @@
-export interface UserProps {
-  id: number;
-  fullName: string | null | undefined;
-  email: string;
-  currentEmploymentStatusId: number;
-  managerId: number | null;
-  currentAreaId: number | null;
-  currentDesignationId: number | null;
-  full_name?: string | null;
+import { Area, Designation, EmploymentStatus, User } from "@prisma/client";
+
+export interface UserDetails extends User {
+  currentEmploymentStatus: EmploymentStatus | null;
+  currentArea: Area | null;
+  currentDesignation: Designation | null;
+  manager: User | null;
 }

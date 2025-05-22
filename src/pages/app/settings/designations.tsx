@@ -1,8 +1,8 @@
 import { Button, Alert, Modal, Input, Flex, Table } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useRef, useState } from "react";
-import MainLayout from "@/app/components/layout/MainLayout";
-import TitleBanner from "@/app/components/shared/TitleBanner";
+import MainLayout from "@/client/components/layout/MainLayout";
+import TitleBanner from "@/client/components/shared/TitleBanner";
 import { GetServerSideProps } from "next";
 
 // eslint-disable-next-line react-refresh/only-export-components
