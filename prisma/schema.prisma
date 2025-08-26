@@ -1,0 +1,467 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Area {
+  id                 Int                @id @default(autoincrement())
+  name               String             @unique(map: "areas_name_unique") @db.VarChar(100)
+  description        String?
+  createdBy          Int?               @map("created_by")
+  createdOn          DateTime           @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy          Int?               @map("updated_by")
+  updatedOn          DateTime?          @db.Timestamptz(6) @map("updated_on")
+  userStateHistory   UserStateHistory[]
+  users              User[] // Relation to the 'User' model (now mapped to 'users' table)
+
+  @@map("area") // Maps Prisma model 'Area' to database table 'area'
+  @@index([name], map: "idx_areas_name")
+}
+
+model AuditLog {
+  id                               Int          @id @default(autoincrement())
+  entityId                         Int          @map("entity_id")
+  entity                           String       @db.VarChar(255)
+  oldValue                         Json?        @db.Json @map("old_value")
+  newValue                         Json?        @db.Json @map("new_value")
+  requestType                      RequestType? @map("request_type")
+  requestedBy                      Int?         @map("requested_by")
+  requestedOn                      DateTime?    @default(now()) @db.Timestamptz(6) @map("requested_on")
+  respondedBy                      Int?         @map("responded_by")
+  respondedOn                      DateTime?    @db.Timestamptz(6) @map("responded_on")
+  requestedByUser                  User?        @relation("AuditLogRequestedByUser", fields: [requestedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  respondedByUser                  User?        @relation("AuditLogRespondedByUser", fields: [respondedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("audit_log") // Maps Prisma model 'AuditLog' to database table 'audit_log'
+}
+
+model Designation {
+  id                 Int                @id @default(autoincrement())
+  title              String             @unique(map: "designations_title_unique") @db.VarChar(100)
+  description        String?
+  createdBy          Int?               @map("created_by")
+  createdOn          DateTime           @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy          Int?               @map("updated_by")
+  updatedOn          DateTime?          @db.Timestamptz(6) @map("updated_on")
+  userStateHistory   UserStateHistory[]
+  users              User[] // Relation to the 'User' model (now mapped to 'users' table)
+
+  @@map("designation") // Maps Prisma model 'Designation' to database table 'designation'
+  @@index([title], map: "idx_designations_title")
+}
+
+model EmploymentStatus {
+  id                 Int                @id @default(autoincrement())
+  statusName         String             @unique(map: "employment_statuses_status_name_unique") @db.VarChar(50) @map("status_name")
+  description        String?
+  createdBy          Int?               @map("created_by")
+  createdOn          DateTime           @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy          Int?               @map("updated_by")
+  updatedOn          DateTime?          @db.Timestamptz(6) @map("updated_on")
+  userStateHistory   UserStateHistory[]
+  users              User[] // Relation to the 'User' model (now mapped to 'users' table)
+
+  @@map("employment_status") // Maps Prisma model 'EmploymentStatus' to database table 'employment_status'
+  @@index([statusName], map: "idx_employment_statuses_status_name")
+}
+
+model UserStateHistory {
+  id                 Int          @id @default(autoincrement())
+  userId             Int          @map("user_id")
+  areaId             Int          @map("area_id")
+  designationId      Int          @map("designation_id")
+  employmentStatusId Int          @map("employment_status_id")
+  startDate          DateTime     @db.Date @map("start_date")
+  endDate            DateTime?    @db.Date @map("end_date")
+  createdBy          Int?         @map("created_by")
+  createdOn          DateTime?    @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy          Int?         @map("updated_by")
+  updatedOn          DateTime?          @db.Timestamptz(6) @map("updated_on")
+  area               Area         @relation(fields: [areaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdByRelation  User?        @relation("UserStateHistoryCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  designation        Designation  @relation(fields: [designationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  employmentStatus   EmploymentStatus @relation(fields: [employmentStatusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedByRelation  User?        @relation("UserStateHistoryUpdatedBy", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user               User         @relation("UserStateHistoryUser", fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("user_state_history") // Maps Prisma model 'UserStateHistory' to database table 'user_state_history'
+  @@index([areaId], map: "idx_user_state_history_area_id")
+  @@index([designationId], map: "idx_user_state_history_designation_id")
+  @@index([employmentStatusId], map: "idx_user_state_history_employment_status_id")
+  @@index([userId], map: "idx_user_state_history_user_id")
+  @@index([userId, endDate], map: "idx_user_state_history_user_id_end_date")
+  @@index([userId, startDate], map: "idx_user_state_history_user_id_start_date")
+}
+
+model User { // Renamed from 'User' to 'User' (model name remains PascalCase)
+  id                               Int                @id @default(autoincrement())
+  fullName                         String             @db.VarChar(255) @map("full_name")
+  email                            String             @unique(map: "users_email_unique") @db.VarChar(255)
+  passwordHash                     String             @db.VarChar(255) @map("password_hash")
+  managerId                        Int?               @map("manager_id")
+  currentAreaId                    Int?               @map("current_area_id")
+  currentDesignationId             Int?               @map("current_designation_id")
+  currentEmploymentStatusId        Int                @map("current_employment_status_id")
+  createdBy                        Int?               @map("created_by")
+  createdOn                        DateTime           @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy                        Int?               @map("updated_by")
+  updatedOn                        DateTime?          @db.Timestamptz(6) @map("updated_on")
+
+  // Relations where User is the 'requested by' or 'responded by'
+  auditLogsRequestedBy             AuditLog[]         @relation("AuditLogRequestedByUser")
+  auditLogsRespondedBy             AuditLog[]         @relation("AuditLogRespondedByUser")
+
+  // Department related
+  departmentUsers                  DepartmentUser[]
+  departmentsCreated               Department[]       @relation("DepartmentsCreatedBy")
+  departmentsManaged               Department[]       @relation("DepartmentsManagedBy")
+  departmentsUpdated               Department[]       @relation("DepartmentsUpdatedBy")
+
+  // Event related
+  eventsCreated                    Event[]            @relation("EventsCreatedBy")
+  eventsUpdated                    Event[]            @relation("EventsUpdatedBy")
+
+  // Holiday related
+  holidaysCreated                  Holiday[]          @relation("HolidaysCreatedBy")
+  holidaysUpdated                  Holiday[]          @relation("HolidaysUpdatedBy")
+
+  // Notice related
+  noticesCreated                   Notice[]           @relation("NoticesCreatedBy")
+  noticesUpdated                   Notice[]           @relation("NoticesUpdatedBy")
+
+  // Team related
+  teamAllocationsCreated           TeamAllocation[]   @relation("TeamAllocationsCreatedBy")
+  teamAllocationsUpdated           TeamAllocation[]   @relation("TeamAllocationsUpdatedBy")
+  teamAllocations                  TeamAllocation[]   @relation("TeamAllocationsUser")
+  teamsCreated                     Team[]             @relation("TeamsCreatedBy")
+  teamsLead                        Team[]             @relation("TeamsLeadBy")
+  teamsUpdated                     Team[]             @relation("TeamsUpdatedBy")
+
+  // User State History related
+  userStateHistoryCreated          UserStateHistory[] @relation("UserStateHistoryCreatedBy")
+  userStateHistoryUpdated          UserStateHistory[] @relation("UserStateHistoryUpdatedBy")
+  userStateHistoryRecords          UserStateHistory[] @relation("UserStateHistoryUser")
+
+  // Current status relations
+  currentArea                      Area?              @relation(fields: [currentAreaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  currentDesignation               Designation?       @relation(fields: [currentDesignationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  currentEmploymentStatus          EmploymentStatus   @relation(fields: [currentEmploymentStatusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  // Self-referencing manager relation
+  manager                          User?              @relation("ManagerOfUsers", fields: [managerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  managedUsers                     User[]             @relation("ManagerOfUsers")
+
+  // Leave related
+  leaveBalancesUserId              LeaveBalance[]     @relation("LeaveBalancesUserId")
+  leaveBalancesCreatedBy           LeaveBalance[]     @relation("LeaveBalancesCreatedBy")
+  leaveBalancesUpdatedBy           LeaveBalance[]     @relation("LeaveBalancesUpdatedBy")
+  leavesApplied                    Leave[]            @relation("LeavesAppliedBy")
+  leavesApproved                   Leave[]            @relation("LeavesApprovedBy")
+  leavesManaged                    Leave[]            @relation("LeavesManagedBy")
+  leavesCreated                    Leave[]            @relation("LeavesCreatedBy")
+  leavesUpdated                    Leave[]            @relation("LeavesUpdatedBy")
+
+  @@map("users") // IMPORTANT: Changed mapping to 'users' to avoid PostgreSQL reserved keyword 'user'
+  @@index([currentAreaId], map: "idx_users_current_area_id")
+  @@index([currentDesignationId], map: "idx_users_current_designation_id")
+  @@index([currentEmploymentStatusId], map: "idx_users_current_employment_status_id")
+  @@index([email], map: "idx_users_email")
+  @@index([managerId], map: "idx_users_manager_id")
+}
+
+model TeamAllocation {
+  id                Int       @id @default(autoincrement())
+  userId            Int       @map("user_id")
+  teamId            Int       @map("team_id")
+  roleInTeam        String?   @db.VarChar(100) @map("role_in_team")
+  startDate         DateTime  @db.Date @map("start_date")
+  endDate           DateTime? @db.Date @map("end_date")
+  allocationPercentage Decimal?  @default(100.00) @db.Decimal(5, 2) @map("allocation_percentage")
+  createdBy         Int?      @map("created_by")
+  createdOn         DateTime  @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy         Int?      @map("updated_by")
+  updatedOn         DateTime? @db.Timestamptz(6) @map("updated_on")
+  createdByRelation User?     @relation("TeamAllocationsCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  team              Team      @relation(fields: [teamId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedByRelation User?     @relation("TeamAllocationsUpdatedBy", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user              User      @relation("TeamAllocationsUser", fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("team_allocation") // Maps Prisma model 'TeamAllocation' to database table 'team_allocation'
+  @@index([teamId], map: "idx_team_allocations_team_id")
+  @@index([userId], map: "idx_team_allocations_user_id")
+  @@index([userId, teamId, startDate], map: "idx_team_allocations_user_id_team_id_start_date")
+}
+
+model Team {
+  id                Int                @id @default(autoincrement())
+  name              String             @unique(map: "teams_name_unique") @db.VarChar(100)
+  description       String?
+  leadUserId        Int?               @map("lead_user_id")
+  createdBy         Int?               @map("created_by")
+  createdOn         DateTime           @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy         Int?               @map("updated_by")
+  updatedOn         DateTime?          @db.Timestamptz(6) @map("updated_on")
+  teamAllocations   TeamAllocation[]
+  createdByRelation User?              @relation("TeamsCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leadUser          User?              @relation("TeamsLeadBy", fields: [leadUserId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedByRelation User?              @relation("TeamsUpdatedBy", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("team") // Maps Prisma model 'Team' to database table 'team'
+  @@index([leadUserId], map: "idx_teams_lead_user_id")
+  @@index([name], map: "idx_teams_name")
+}
+
+model Event {
+  id                Int       @id @default(autoincrement())
+  title             String    @db.VarChar(255)
+  startDate         DateTime  @db.Date @map("start_date")
+  endDate           DateTime  @db.Date @map("end_date")
+  description       String
+  isAllDay          Boolean?  @default(false) @map("is_all_day")
+  isRecurring       Boolean?  @default(false) @map("is_recurring")
+  recurrencePattern String?   @db.VarChar(50) @map("recurrence_pattern")
+  visibilityScope   String?   @default("company") @db.VarChar(50) @map("visibility_scope")
+  isActive          Boolean   @default(true) @map("is_active")
+  isDeleted         Boolean?  @default(false) @map("is_deleted")
+  createdBy         Int       @map("created_by")
+  createdOn         DateTime  @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy         Int?      @map("updated_by")
+  updatedOn         DateTime? @db.Timestamptz(6) @map("updated_on")
+  // Foreign key for eventTypeCode referencing MasterData
+  eventTypeCode     String?   @db.VarChar(50) @map("event_type_code")
+  eventType         MasterData? @relation("EventType", fields: [eventTypeCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
+
+  createdByRelation User?     @relation("EventsCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedByRelation User?     @relation("EventsUpdatedBy", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("event") // Maps Prisma model 'Event' to database table 'event'
+  @@index([eventTypeCode], map: "idx_event_type_code")
+}
+
+model Holiday {
+  id                Int       @id @default(autoincrement())
+  title             String?   @db.VarChar(255)
+  startDate         DateTime? @db.Date @map("start_date")
+  endDate           DateTime? @db.Date @map("end_date")
+  description       String?
+  countryCode       String?   @db.Char(2) @map("country_code")
+  region            String?   @db.VarChar(100)
+  isActive          Boolean?  @default(true) @map("is_active")
+  isDeleted         Boolean?  @default(false) @map("is_deleted")
+  createdBy         Int?      @map("created_by")
+  createdOn         DateTime  @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy         Int?      @map("updated_by")
+  updatedOn         DateTime? @db.Timestamptz(6) @map("updated_on")
+  // Foreign key for holidayTypeCode referencing MasterData
+  holidayTypeCode   String?   @db.VarChar(50) @map("holiday_type_code")
+  holidayType       MasterData? @relation("HolidayType", fields: [holidayTypeCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
+
+  createdByRelation User?     @relation("HolidaysCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedByRelation User?     @relation("HolidaysUpdatedBy", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("holiday") // Maps Prisma model 'Holiday' to database table 'holiday'
+  @@index([holidayTypeCode], map: "idx_holiday_type_code")
+}
+
+model Notice {
+  id                Int       @id @default(autoincrement())
+  title             String?   @db.VarChar(255)
+  startDate         DateTime? @db.Date @map("start_date")
+  endDate           DateTime? @db.Date @map("end_date")
+  description       String?
+  targetAudience    String?   @db.VarChar(100) @map("target_audience")
+  isActive          Boolean?  @default(true) @map("is_active")
+  isDeleted         Boolean?  @default(false) @map("is_deleted")
+  createdBy         Int?      @map("created_by")
+  createdOn         DateTime  @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy         Int?      @map("updated_by")
+  updatedOn         DateTime? @db.Timestamptz(6) @map("updated_on")
+  // Foreign key for noticeTypeCode referencing MasterData
+  noticeTypeCode    String?   @db.VarChar(50) @map("notice_type_code")
+  noticeType        MasterData? @relation("NoticeType", fields: [noticeTypeCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
+  // Foreign key for urgencyTypeCode referencing MasterData
+  urgencyTypeCode   String?   @db.VarChar(50) @map("urgency_type_code")
+  urgencyType       MasterData? @relation("UrgencyType", fields: [urgencyTypeCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
+
+  createdByRelation User?     @relation("NoticesCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedByRelation User?     @relation("NoticesUpdatedBy", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("notice") // Maps Prisma model 'Notice' to database table 'notice'
+  @@index([noticeTypeCode], map: "idx_notice_type_code")
+  @@index([urgencyTypeCode], map: "idx_urgency_type_code")
+}
+
+model MasterData {
+  id         Int      @id @default(autoincrement())
+  entityType String   @db.VarChar(50) @map("entity_type")
+  code       String   @unique @db.VarChar(50)
+  label      String   @db.VarChar(255)
+  color      String?  @db.VarChar(20)
+  isActive   Boolean? @default(true) @map("is_active")
+
+  // Reverse relations to link back from MasterData
+  events     Event[]    @relation("EventType")
+  holidays   Holiday[]  @relation("HolidayType")
+  notices    Notice[]   @relation("NoticeType")
+  urgencies  Notice[]   @relation("UrgencyType")
+
+
+  @@map("master_data") // Maps Prisma model 'MasterData' to database table 'master_data'
+  @@unique([entityType, code], map: "idx_master_data_entity_type_code")
+  @@index([entityType], map: "idx_master_data_entity_type")
+}
+
+model DepartmentUser {
+  departmentId Int      @map("department_id")
+  userId       Int      @map("user_id")
+  role         String?  @db.VarChar
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([departmentId, userId])
+  @@map("department_user") // Maps Prisma model 'DepartmentUser' to database table 'department_user'
+}
+
+model Department {
+  id                    Int               @id @default(autoincrement())
+  departmentName        String            @unique @db.VarChar @map("department_name")
+  description           String?           @db.VarChar
+  departmentManagerId   Int?              @map("department_manager_id")
+  createdBy             Int?              @map("created_by")
+  createdOn             DateTime          @default(now()) @db.Timestamp(6) @map("created_on")
+  updatedBy             Int?              @map("updated_by")
+  updatedOn             DateTime?         @db.Timestamp(6) @map("updated_on")
+  departmentUsers       DepartmentUser[]
+  createdByRelation     User?             @relation("DepartmentsCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  departmentManager     User?             @relation("DepartmentsManagedBy", fields: [departmentManagerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedByRelation     User?             @relation("DepartmentsUpdatedBy", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("department") // Maps Prisma model 'Department' to database table 'department'
+  @@index([departmentManagerId])
+}
+
+model FiscalYear {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique @db.VarChar(100)
+  startDate   DateTime  @db.Date @map("start_date")
+  endDate     DateTime  @db.Date @map("end_date")
+  description String?   @db.Text
+  isActive    Boolean   @default(false) @map("is_active")
+  createdBy   Int?      @map("created_by")
+  createdOn   DateTime  @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy   Int?      @map("updated_by")
+  updatedOn   DateTime? @db.Timestamptz(6) @map("updated_on")
+  leaveBalances LeaveBalance[]
+  leaves      Leave[]
+
+  @@map("fiscal_year") // Maps Prisma model 'FiscalYear' to database table 'fiscal_year'
+  @@index([name], map: "idx_fiscal_years_name")
+  @@index([startDate], map: "idx_fiscal_years_start_date")
+  @@index([endDate], map: "idx_fiscal_years_end_date")
+}
+
+model LeaveType {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique @db.VarChar(100)
+  code        String    @unique @db.VarChar(50)
+  description String?   @db.Text
+  days        Decimal   @default(0) @db.Decimal(5, 2)
+  carryOverDays Decimal @default(0) @db.Decimal(5, 2) @map("carry_over_days")
+  isActive    Boolean   @default(false) @map("is_active")
+  createdBy   Int?      @map("created_by")
+  createdOn   DateTime  @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy   Int?      @map("updated_by")
+  updatedOn   DateTime? @db.Timestamptz(6) @map("updated_on")
+  leaveBalances LeaveBalance[]
+  leaves      Leave[]
+
+  @@map("leave_type") // Maps Prisma model 'LeaveType' to database table 'leave_type'
+  @@index([name], map: "idx_leave_types_name")
+  @@index([code], map: "idx_leave_types_code")
+}
+
+model LeaveBalance {
+  id             Int         @id @default(autoincrement())
+  userId         Int         @map("user_id")
+  leaveTypeId    Int         @map("leave_type_id")
+  fiscalYearId   Int         @map("fiscal_year_id")
+  totalDays      Decimal     @db.Decimal(5, 2) @map("total_days")
+  usedDays       Decimal     @default(0) @db.Decimal(5, 2) @map("used_days")
+  isActive       Boolean     @default(false) @map("is_active")
+  createdBy      Int?        @map("created_by")
+  createdOn      DateTime    @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy      Int?        @map("updated_by")
+  updatedOn      DateTime?   @db.Timestamptz(6) @map("updated_on")
+  user           User        @relation("LeaveBalancesUserId", fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leaveType      LeaveType   @relation(fields: [leaveTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  fiscalYear     FiscalYear  @relation(fields: [fiscalYearId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdByRelation User?    @relation("LeaveBalancesCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedByRelation User?    @relation("LeaveBalancesUpdatedBy", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([userId, leaveTypeId, fiscalYearId], map: "idx_leave_balances_user_leave_fiscal")
+  @@map("leave_balance") // Maps Prisma model 'LeaveBalance' to database table 'leave_balance'
+  @@index([userId], map: "idx_leave_balances_user_id")
+  @@index([leaveTypeId], map: "idx_leave_balances_leave_type_id")
+  @@index([fiscalYearId], map: "idx_leave_balances_fiscal_year_id")
+}
+
+model Leave {
+  id             Int         @id @default(autoincrement())
+  userId         Int         @map("user_id")
+  leaveTypeId    Int         @map("leave_type_id")
+  fiscalYearId   Int         @map("fiscal_year_id")
+  startDate      DateTime    @db.Date @map("start_date")
+  endDate        DateTime    @db.Date @map("end_date")
+  durationDays   Decimal     @db.Decimal(5, 2) @map("duration_days")
+  reason         String?     @db.Text
+  status         String      @default("pending") @db.VarChar(20)
+  appliedAt      DateTime    @default(now()) @db.Timestamptz(6) @map("applied_at")
+  approvedBy     Int?        @map("approved_by")
+  approvedAt     DateTime?   @db.Timestamptz(6) @map("approved_at")
+  notes          String?     @db.Text
+  managerId      Int?        @map("manager_id")
+  createdBy      Int?        @map("created_by")
+  createdOn      DateTime    @default(now()) @db.Timestamptz(6) @map("created_on")
+  updatedBy      Int?        @map("updated_by")
+  updatedOn      DateTime?   @db.Timestamptz(6) @map("updated_on")
+  user           User        @relation("LeavesAppliedBy", fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leaveType      LeaveType   @relation(fields: [leaveTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  fiscalYear     FiscalYear  @relation(fields: [fiscalYearId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  approvedByUser User?       @relation("LeavesApprovedBy", fields: [approvedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  manager        User?       @relation("LeavesManagedBy", fields: [managerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdByRelation User?    @relation("LeavesCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedByRelation User?    @relation("LeavesUpdatedBy", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leaveTransactions LeaveTransaction[]
+
+  @@map("leave") // Maps Prisma model 'Leave' to database table 'leave'
+  @@index([userId], map: "idx_leaves_user_id")
+  @@index([leaveTypeId], map: "idx_leaves_leave_type_id")
+  @@index([fiscalYearId], map: "idx_leaves_fiscal_year_id")
+  @@index([status], map: "idx_leaves_status")
+  @@index([approvedBy], map: "idx_leaves_approved_by")
+  @@index([managerId], map: "idx_leaves_manager_id")
+}
+
+model LeaveTransaction {
+  id         Int      @id @default(autoincrement())
+  leaveId    Int      @map("leave_id")
+  type       String   @default("request") @db.VarChar(20)
+  createdAt  DateTime @default(now()) @db.Timestamptz(6) @map("created_at")
+  notes      String?  @db.Text
+  leave      Leave    @relation(fields: [leaveId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("leave_transaction") // Maps Prisma model 'LeaveTransaction' to database table 'leave_transaction'
+  @@index([leaveId], map: "idx_leave_transactions_leave_id")
+  @@index([type], map: "idx_leave_transactions_type")
+}
+
+enum RequestType {
+  CREATE
+  UPDATE
+  DELETE
+  OTHER
+}
